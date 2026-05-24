@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Local AI — AI for local business</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script>
 function showPage(name) {
   document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
@@ -53,47 +53,66 @@ function handleFormSubmit(btn) {
     --text-muted: rgba(42,47,43,0.45);
     --text-soft: rgba(42,47,43,0.68);
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
   body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--charcoal); overflow-x: hidden; }
+
+  /* GLOBAL H2 LOCK - consistent across all sections */
+  h2, .section-title, .faq-header h2, .blog-header h2, .cta-section h2, .booking-section .section-title {
+    font-family: 'DM Serif Display', serif !important;
+    font-size: 2.4rem !important;
+    font-weight: 400 !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.3px !important;
+    word-spacing: 0.02em !important;
+  }
+
+  h2 em, .section-title em, .faq-header h2 em, .blog-header h2 em, .cta-section h2 em, .booking-section .section-title em {
+    font-family: 'DM Serif Display', serif !important;
+    font-size: 2.4rem !important;
+    font-weight: 400 !important;
+    font-style: italic !important;
+    color: var(--green) !important;
+    letter-spacing: -0.3px !important;
+    word-spacing: 0.02em !important;
+  }
   body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; opacity: 0.5; }
 
   /* NAV */
   nav { position: sticky; top: 0; z-index: 100; background: rgba(244,240,232,0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(42,47,43,0.07); padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-  .logo { display: flex; align-items: baseline; text-decoration: none; gap: 0; }
-  .logo-local { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; color: var(--charcoal); letter-spacing: -0.5px; }
+  .logo { display: flex; align-items: baseline; text-decoration: none; }
+  .logo-local { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1.4rem; color: var(--charcoal); letter-spacing: -0.5px; }
   .logo-dot { width: 5px; height: 5px; background: var(--terracotta); border-radius: 50%; margin: 0 2px 3px 2px; flex-shrink: 0; display: inline-block; }
-  .logo-ai { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; font-size: 1.4rem; color: var(--green); letter-spacing: -0.5px; }
+  .logo-ai { font-family: 'DM Serif Display', serif; font-weight: 400; font-style: italic; font-size: 1.4rem; color: var(--green); letter-spacing: -0.5px; }
   .nav-right { display: flex; align-items: center; gap: 8px; }
   .nav-links { display: none; gap: 28px; }
   .nav-links a { font-size: 0.82rem; font-weight: 500; color: var(--text-soft); text-decoration: none; transition: color 0.2s; }
   .nav-links a:hover { color: var(--charcoal); }
   @media (min-width: 768px) { .nav-links { display: flex; } }
-  .nav-cta { background: var(--charcoal); color: white; padding: 10px 20px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; text-decoration: none; letter-spacing: 0.01em; transition: background 0.2s; white-space: nowrap; cursor: pointer; }
+  .nav-cta { background: var(--charcoal); color: white; padding: 10px 20px; border-radius: 100px; font-size: 0.8rem; font-weight: 400; text-decoration: none; letter-spacing: 0.01em; transition: background 0.2s; white-space: nowrap; cursor: pointer; }
   .nav-cta:hover { background: var(--green); }
 
   /* PAGE TABS */
   .page-tabs { display: flex; border-bottom: 1px solid rgba(42,47,43,0.08); background: var(--cream); position: sticky; top: 64px; z-index: 90; overflow-x: auto; scrollbar-width: none; }
   .page-tabs::-webkit-scrollbar { display: none; }
   .page-tab { flex-shrink: 0; padding: 14px 20px; font-size: 0.82rem; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
-  .page-tab.active { color: var(--charcoal); border-bottom-color: var(--charcoal); font-weight: 600; }
+  .page-tab.active { color: var(--charcoal); border-bottom-color: var(--charcoal); font-weight: 400; }
   .page-tab:hover { color: var(--charcoal); }
-
-  /* PAGES */
   .page { display: none; }
   .page.active { display: block; }
 
   /* HERO */
   .hero { padding: 64px 24px 56px; max-width: 1080px; margin: 0 auto; }
   @media (min-width: 768px) { .hero { padding: 96px 24px 80px; } .hero h1 { font-size: 5rem; } }
-  .hero-eyebrow { display: inline-flex; align-items: center; gap: 7px; background: var(--green-light); border: 1px solid rgba(107,158,122,0.2); border-radius: 100px; padding: 5px 12px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 28px; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 7px; background: var(--green-light); border: 1px solid rgba(107,158,122,0.2); border-radius: 100px; padding: 5px 12px; font-size: 0.68rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 28px; }
   .hero-eyebrow-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; }
-  .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.4rem; font-weight: 900; line-height: 1.05; letter-spacing: -1.5px; color: var(--charcoal); margin-bottom: 24px; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: 3.4rem; font-weight: 400; line-height: 1.05; letter-spacing: -1.5px; color: var(--charcoal); margin-bottom: 24px; }
   .hero h1 em { font-style: italic; color: var(--green); }
   .hero-sub { font-size: 1.05rem; line-height: 1.75; color: var(--text-soft); font-weight: 300; margin-bottom: 36px; max-width: 560px; }
-  .hero-cta-group { display: flex; flex-direction: column; gap: 12px; max-width: 320px; }
-  @media (min-width: 480px) { .hero-cta-group { flex-direction: row; max-width: none; align-items: center; } }
-  .btn-primary { background: var(--charcoal); color: white; padding: 16px 28px; border-radius: 100px; font-weight: 600; font-size: 0.95rem; text-decoration: none; text-align: center; display: inline-block; letter-spacing: 0.01em; transition: background 0.2s; cursor: pointer; }
+  .hero-cta-group { display: flex; flex-direction: column; gap: 12px; }
+  @media (min-width: 480px) { .hero-cta-group { flex-direction: row; align-items: center; } }
+  .btn-primary { background: var(--charcoal); color: white; padding: 16px 28px; border-radius: 100px; font-weight: 400; font-size: 0.95rem; text-decoration: none; text-align: center; display: inline-block; letter-spacing: 0.01em; transition: background 0.2s; cursor: pointer; }
   .btn-primary:hover { background: var(--green); }
   .btn-ghost { color: var(--charcoal); font-weight: 500; font-size: 0.88rem; text-decoration: none; opacity: 0.6; display: flex; align-items: center; gap: 6px; padding: 8px 0; white-space: nowrap; cursor: pointer; }
   .btn-ghost:hover { opacity: 1; }
@@ -112,10 +131,10 @@ function handleFormSubmit(btn) {
   /* STATS STRIP */
   .stats-strip { background: white; border-bottom: 1px solid rgba(42,47,43,0.07); padding: 24px; }
   .stats-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr; align-items: center; }
-  @media (max-width: 600px) { .stats-inner { grid-template-columns: 1fr 1fr; gap: 0; } }
+  @media (max-width: 600px) { .stats-inner { grid-template-columns: 1fr 1fr; } }
   .stat-item { text-align: center; padding: 16px 12px; }
-  .stat-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
-  .stat-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; white-space: nowrap; }
+  .stat-label { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .stat-value { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; white-space: nowrap; }
   @media (max-width: 600px) { .stat-value { font-size: 1.15rem; } }
   .stat-divider { width: 1px; height: 40px; background: rgba(42,47,43,0.1); justify-self: center; }
   @media (max-width: 600px) { .stat-divider { display: none; } .stat-item { padding: 16px 8px; border-bottom: 1px solid rgba(42,47,43,0.06); } .stat-item:nth-child(1), .stat-item:nth-child(3) { border-right: 1px solid rgba(42,47,43,0.06); } .stat-item:nth-child(5), .stat-item:nth-child(7) { border-bottom: none; } }
@@ -123,16 +142,9 @@ function handleFormSubmit(btn) {
   /* SECTIONS */
   .section { padding: 72px 24px; }
   .section-inner { max-width: 1080px; margin: 0 auto; }
-  .section-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 12px; }
-  .section-title { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.5px; color: var(--charcoal); margin-bottom: 16px; }
-  .section-title em { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; font-style: italic; color: var(--green); letter-spacing: -0.5px; line-height: 1.1; }
-  .how-section .section-title { font-size: 2.4rem; }
-  .how-section .section-title em { font-size: 2.4rem; font-weight: 700; font-style: italic; color: var(--green); }
-  .booking-section .section-title { font-size: 2.4rem; }
-  .booking-section .section-title em { font-size: 2.4rem; font-weight: 700; font-style: italic; }
-  .cta-section h2 em { font-family: 'Playfair Display', serif; font-size: inherit; font-weight: 700; font-style: italic; color: var(--green); }
-  .faq-header h2 em { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; color: var(--green); }
-  .blog-header h2 em { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; color: var(--green); }
+  .section-eyebrow { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 12px; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 2.4rem; font-weight: 400; line-height: 1.15; letter-spacing: -0.3px; color: var(--charcoal); margin-bottom: 16px; word-spacing: 0.02em; }
+  .section-title em { font-family: 'DM Serif Display', serif; font-size: 2.4rem; font-weight: 400; font-style: italic; color: var(--green); letter-spacing: -0.5px; line-height: 1.1; }
   .section-body { font-size: 0.95rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; max-width: 560px; }
 
   /* INDUSTRIES */
@@ -143,7 +155,7 @@ function handleFormSubmit(btn) {
   .industry-chip:hover { box-shadow: 0 4px 16px rgba(42,47,43,0.08); }
   .industry-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--cream); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .industry-icon svg { width: 16px; height: 16px; }
-  .industry-label { font-size: 0.78rem; font-weight: 600; color: var(--charcoal); line-height: 1.3; }
+  .industry-label { font-size: 0.78rem; font-weight: 400; color: var(--charcoal); line-height: 1.3; }
 
   /* HOW IT WORKS */
   .how-section { background: var(--charcoal); padding: 72px 24px; }
@@ -154,58 +166,50 @@ function handleFormSubmit(btn) {
   .steps { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 40px; }
   @media (min-width: 768px) { .steps { grid-template-columns: repeat(3, 1fr); } }
   .step { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 28px 24px; position: relative; overflow: hidden; }
-  .step-num { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.05); line-height: 1; position: absolute; top: 12px; right: 16px; letter-spacing: -2px; }
+  .step-num { font-family: 'DM Serif Display', serif; font-size: 4rem; font-weight: 400; color: rgba(255,255,255,0.05); line-height: 1; position: absolute; top: 12px; right: 16px; letter-spacing: -2px; }
   .step-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--green); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
   .step-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
-  .step h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.3; }
+  .step h3 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; font-weight: 400; color: white; margin-bottom: 12px; line-height: 1.3; }
   .step p { font-size: 0.85rem; line-height: 1.75; color: rgba(255,255,255,0.42); font-weight: 300; }
 
-  /* WHAT'S INCLUDED */
-  .value-list { display: flex; flex-direction: column; gap: 8px; margin-top: 32px; }
-  @media (min-width: 768px) { .value-list { display: grid; grid-template-columns: 1fr 1fr; } }
-  .value-item { display: flex; align-items: flex-start; gap: 14px; padding: 18px; border-radius: 14px; background: white; }
-  .value-check { width: 22px; height: 22px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-  .value-check svg { width: 10px; height: 10px; stroke: white; fill: none; stroke-width: 2.5; }
-  .value-title { font-weight: 600; font-size: 0.92rem; color: var(--charcoal); margin-bottom: 4px; }
-  .value-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
-
-  /* ABOUT */
+  /* ABOUT / WHO WE ARE */
   .about-section { padding: 72px 24px; }
-  .about-inner { max-width: 1080px; margin: 0 auto; }
-  .about-quote-card { background: var(--charcoal); border-radius: 20px; padding: 36px 32px; margin-top: 32px; position: relative; overflow: hidden; max-width: 640px; }
-  .about-quote-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(107,158,122,0.18) 0%, transparent 70%); border-radius: 50%; }
-  .quote-mark { display: none; }
-  .quote-text { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; font-style: italic; color: white; line-height: 1.55; margin-bottom: 24px; quotes: none; }
-  .quote-attr strong { display: block; font-size: 0.84rem; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 2px; }
-  .quote-attr span { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
-  .value-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
-  .value-tag { background: var(--green-light); color: var(--green); font-size: 0.72rem; font-weight: 600; padding: 6px 14px; border-radius: 100px; border: 1px solid rgba(107,158,122,0.2); }
+  .about-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 48px; }
+  @media (min-width: 860px) { .about-inner { grid-template-columns: 1fr 1fr; align-items: start; } }
 
-  /* JOEL CARD */
-  .joel-card { margin-top: 40px; background: white; border-radius: 20px; border: 1px solid rgba(42,47,43,0.07); padding: 32px; display: flex; flex-direction: column; gap: 28px; max-width: 640px; }
-  @media (min-width: 560px) { .joel-card { flex-direction: row; align-items: flex-start; } }
-  .joel-photo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center top; display: block; border: 3px solid var(--green-light); flex-shrink: 0; }
-  .joel-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; color: var(--charcoal); margin-bottom: 2px; }
-  .joel-role { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
-  .joel-text { font-size: 0.88rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; margin-bottom: 10px; }
-  .joel-email { display: inline-block; margin-top: 6px; font-size: 0.82rem; font-weight: 600; color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(107,158,122,0.3); padding-bottom: 1px; }
+  .about-quote-card { background: var(--charcoal); border-radius: 20px; padding: 36px 32px; position: relative; overflow: hidden; }
+  .about-quote-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(107,158,122,0.18) 0%, transparent 70%); border-radius: 50%; }
+  .quote-text { font-family: 'DM Serif Display', serif; font-size: 1.25rem; font-weight: 400; font-style: italic; color: white; line-height: 1.55; margin-bottom: 24px; }
+  .quote-attr strong { display: block; font-size: 0.84rem; font-weight: 400; color: rgba(255,255,255,0.7); margin-bottom: 2px; }
+  .quote-attr span { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
+
+  .joel-card { background: white; border-radius: 20px; border: 1px solid rgba(42,47,43,0.07); padding: 32px; display: flex; flex-direction: column; gap: 20px; }
+  @media (min-width: 480px) { .joel-card { flex-direction: row; align-items: flex-start; } }
+  .joel-photo { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; object-position: center top; display: block; border: 3px solid var(--green-light); flex-shrink: 0; }
+  .joel-name { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1.15rem; color: var(--charcoal); margin-bottom: 2px; }
+  .joel-role { font-size: 0.72rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+  .joel-text { font-size: 0.88rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; margin-bottom: 8px; }
+  .joel-email { display: inline-block; margin-top: 4px; font-size: 0.82rem; font-weight: 400; color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(107,158,122,0.3); padding-bottom: 1px; }
   .joel-email:hover { border-color: var(--green); }
+
+  .trust-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .trust-tag { background: var(--green-light); color: var(--green); font-size: 0.72rem; font-weight: 400; padding: 6px 14px; border-radius: 100px; border: 1px solid rgba(107,158,122,0.2); }
 
   /* PRICING */
   .pricing-section { padding: 72px 24px; background: var(--cream-dark); }
   .pricing-inner { max-width: 1080px; margin: 0 auto; }
   .pricing-steps { display: flex; flex-direction: column; gap: 4px; margin-top: 36px; max-width: 760px; }
   .pricing-step { background: white; border-radius: 20px; padding: 32px 28px; border: 1px solid rgba(42,47,43,0.07); display: flex; gap: 24px; align-items: flex-start; }
-  .ps-num { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: rgba(42,47,43,0.07); line-height: 1; flex-shrink: 0; width: 44px; margin-top: 2px; }
+  .ps-num { font-family: 'DM Serif Display', serif; font-size: 2.8rem; font-weight: 400; color: rgba(42,47,43,0.07); line-height: 1; flex-shrink: 0; width: 44px; margin-top: 2px; }
   .ps-body { flex: 1; }
-  .ps-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 4px; }
-  .ps-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--charcoal); margin-bottom: 12px; line-height: 1.2; }
+  .ps-label { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 4px; }
+  .ps-name { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; color: var(--charcoal); margin-bottom: 12px; line-height: 1.2; }
   .ps-desc { font-size: 0.88rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; margin-bottom: 16px; }
   .ps-includes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
   .ps-include { display: flex; align-items: center; gap: 10px; font-size: 0.83rem; color: var(--text-soft); line-height: 1.5; }
   .feat-check { width: 16px; height: 16px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .feat-check svg { width: 8px; height: 8px; stroke: var(--green); fill: none; stroke-width: 2; }
-  .ps-free { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--green); letter-spacing: -0.5px; }
+  .ps-free { font-family: 'DM Serif Display', serif; font-size: 1.8rem; font-weight: 400; color: var(--green); letter-spacing: -0.5px; }
   .ps-honesty { display: flex; align-items: flex-start; gap: 10px; background: var(--green-light); border: 1px solid rgba(107,158,122,0.2); border-radius: 12px; padding: 14px 16px; font-size: 0.82rem; color: var(--charcoal); line-height: 1.65; margin-top: 4px; }
   .ps-honesty svg { flex-shrink: 0; margin-top: 2px; stroke: var(--green); fill: none; }
   .pricing-arrow { display: flex; align-items: center; padding: 4px 0 4px 44px; color: rgba(42,47,43,0.2); }
@@ -216,14 +220,14 @@ function handleFormSubmit(btn) {
   @media (min-width: 860px) { .booking-inner { grid-template-columns: 1fr 1fr; align-items: start; } }
   .booking-section .section-eyebrow { color: var(--green); }
   .booking-section .section-title { color: white; }
-  .booking-section .section-title em { color: var(--green); }
+  .booking-section .section-title em { font-family: 'DM Serif Display', serif; font-size: 2.4rem; font-weight: 400; font-style: italic; color: var(--green); }
   .booking-section .section-body { color: rgba(255,255,255,0.45); margin-bottom: 32px; }
   .booking-promises { display: flex; flex-direction: column; gap: 14px; }
   .booking-promise { display: flex; align-items: center; gap: 12px; font-size: 0.88rem; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.5; }
   .bp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
   .booking-form-card { background: var(--cream); border-radius: 20px; padding: 32px 28px; }
   .form-row { margin-bottom: 18px; }
-  .form-label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--charcoal); margin-bottom: 7px; letter-spacing: 0.01em; }
+  .form-label { display: block; font-size: 0.78rem; font-weight: 400; color: var(--charcoal); margin-bottom: 7px; }
   .form-required { color: var(--terracotta); }
   .form-optional { color: var(--text-muted); font-weight: 400; }
   .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid rgba(42,47,43,0.12); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--charcoal); background: white; transition: border-color 0.2s, box-shadow 0.2s; outline: none; -webkit-appearance: none; }
@@ -231,22 +235,14 @@ function handleFormSubmit(btn) {
   .form-input::placeholder { color: var(--text-muted); }
   .form-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232A2F2B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
   .form-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-  .form-submit { width: 100%; padding: 16px; background: var(--charcoal); color: white; border: none; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; margin-top: 6px; transition: background 0.2s; letter-spacing: 0.01em; }
+  .form-submit { width: 100%; padding: 16px; background: var(--charcoal); color: white; border: none; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 400; cursor: pointer; margin-top: 6px; transition: background 0.2s; }
   .form-submit:hover { background: var(--green); }
   .form-note { text-align: center; font-size: 0.72rem; color: var(--text-muted); margin-top: 12px; }
   .form-success { text-align: center; padding: 32px 20px; }
   .form-success-icon { width: 48px; height: 48px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
   .form-success-icon svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 2.5; }
-  .form-success h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--charcoal); margin-bottom: 10px; }
+  .form-success h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; color: var(--charcoal); margin-bottom: 10px; }
   .form-success p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
-
-  /* CTA */
-  .cta-section { padding: 80px 24px; text-align: center; }
-  .cta-inner { max-width: 560px; margin: 0 auto; }
-  .cta-section h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; line-height: 1.1; color: var(--charcoal); letter-spacing: -0.5px; margin-bottom: 18px; }
-  .cta-section h2 em { font-style: italic; color: var(--green); }
-  .cta-section p { font-size: 0.95rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; margin-bottom: 36px; }
-  .cta-note { font-size: 0.72rem; color: var(--text-muted); margin-top: 14px; }
 
   /* FOOTER */
   footer { background: var(--charcoal); padding: 48px 24px 56px; }
@@ -256,7 +252,7 @@ function handleFormSubmit(btn) {
   .footer-links { display: flex; flex-direction: column; gap: 12px; }
   .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; cursor: pointer; }
   .footer-links a:hover { color: rgba(255,255,255,0.7); }
-  .footer-links-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.18); margin-bottom: 4px; }
+  .footer-links-label { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.18); margin-bottom: 4px; }
   .footer-contact a { font-size: 0.82rem; color: rgba(255,255,255,0.45); text-decoration: none; display: block; margin-bottom: 6px; }
   .footer-contact a:hover { color: rgba(255,255,255,0.7); }
   .footer-copy { font-size: 0.7rem; color: rgba(255,255,255,0.18); margin-top: 40px; max-width: 1080px; margin-left: auto; margin-right: auto; }
@@ -264,23 +260,21 @@ function handleFormSubmit(btn) {
   /* FAQ */
   .faq-wrap { max-width: 720px; margin: 0 auto; padding: 64px 24px; }
   .faq-header { margin-bottom: 48px; }
-  .faq-header h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 14px; }
-  .faq-header h2 em { font-style: italic; color: var(--green); }
+  .faq-header h2 { font-family: 'DM Serif Display', serif; font-size: 2.6rem; font-weight: 400; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 14px; }
+  .faq-header h2 em { font-family: 'DM Serif Display', serif; font-weight: 400; font-style: italic; color: var(--green); }
   .faq-header p { font-size: 0.95rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; }
   .faq-group { margin-bottom: 40px; }
-  .faq-group-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 12px; }
+  .faq-group-label { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 12px; }
   .faq-item { border-bottom: 1px solid rgba(42,47,43,0.08); padding: 20px 0; }
-  .faq-question { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: var(--charcoal); line-height: 1.4; background: none; border: none; width: 100%; text-align: left; font-family: 'DM Sans', sans-serif; padding: 0; }
+  .faq-question { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; cursor: pointer; font-weight: 400; font-size: 0.95rem; color: var(--charcoal); line-height: 1.4; background: none; border: none; width: 100%; text-align: left; font-family: 'DM Sans', sans-serif; padding: 0; }
   .faq-chevron { width: 20px; height: 20px; flex-shrink: 0; border-radius: 50%; background: var(--cream-dark); display: flex; align-items: center; justify-content: center; transition: background 0.2s; margin-top: 2px; }
   .faq-chevron svg { width: 10px; height: 10px; stroke: var(--charcoal); fill: none; stroke-width: 2.5; transition: transform 0.3s; }
   .faq-item.open .faq-chevron { background: var(--green); }
   .faq-item.open .faq-chevron svg { stroke: white; transform: rotate(180deg); }
   .faq-answer { font-size: 0.88rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.2s; }
   .faq-item.open .faq-answer { max-height: 600px; padding-top: 14px; }
-
-  /* TO AI OR NOT TO AI */
   .to-ai-section { background: var(--charcoal); border-radius: 20px; padding: 32px 28px; margin-top: 56px; }
-  .to-ai-label { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 6px; }
+  .to-ai-label { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; color: white; margin-bottom: 6px; }
   .to-ai-sub { font-size: 0.82rem; color: rgba(255,255,255,0.4); font-weight: 300; margin-bottom: 24px; line-height: 1.6; }
   .to-ai-section .faq-item { border-bottom-color: rgba(255,255,255,0.08); }
   .to-ai-section .faq-question { color: white; }
@@ -293,8 +287,8 @@ function handleFormSubmit(btn) {
   /* BLOG */
   .blog-wrap { max-width: 1080px; margin: 0 auto; padding: 64px 24px; }
   .blog-header { margin-bottom: 48px; }
-  .blog-header h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 14px; }
-  .blog-header h2 em { font-style: italic; color: var(--green); }
+  .blog-header h2 { font-family: 'DM Serif Display', serif; font-size: 2.6rem; font-weight: 400; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 14px; }
+  .blog-header h2 em { font-family: 'DM Serif Display', serif; font-weight: 400; font-style: italic; color: var(--green); }
   .blog-header p { font-size: 0.95rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; max-width: 520px; }
   .blog-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
   @media (min-width: 640px) { .blog-grid { grid-template-columns: 1fr 1fr; } }
@@ -303,8 +297,8 @@ function handleFormSubmit(btn) {
   .blog-card:hover { box-shadow: 0 8px 32px rgba(42,47,43,0.1); }
   .blog-card-thumb { height: 160px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .blog-card-body { padding: 22px 20px 24px; flex: 1; display: flex; flex-direction: column; }
-  .blog-tag { display: inline-block; background: var(--green-light); color: var(--green); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; margin-bottom: 12px; border: 1px solid rgba(107,158,122,0.2); }
-  .blog-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--charcoal); line-height: 1.4; margin-bottom: 10px; }
+  .blog-tag { display: inline-block; background: var(--green-light); color: var(--green); font-size: 0.62rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; margin-bottom: 12px; border: 1px solid rgba(107,158,122,0.2); }
+  .blog-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; font-weight: 400; color: var(--charcoal); line-height: 1.4; margin-bottom: 10px; }
   .blog-excerpt { font-size: 0.82rem; line-height: 1.7; color: var(--text-muted); font-weight: 300; flex: 1; margin-bottom: 16px; }
   .blog-meta { font-size: 0.7rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
   .blog-meta-dot { width: 3px; height: 3px; background: var(--text-muted); border-radius: 50%; }
@@ -316,7 +310,213 @@ function handleFormSubmit(btn) {
   .hero-sub { animation: fadeUp 0.6s ease 0.3s both; }
   .hero-cta-group { animation: fadeUp 0.6s ease 0.4s both; }
   .pain-cards { animation: fadeUp 0.6s ease 0.5s both; }
+
+  /* QUIZ SECTION */
+  .quiz-section { padding: 72px 24px; background: var(--cream-dark); }
+  .quiz-outer { max-width: 1080px; margin: 0 auto; }
+
+  .quiz-card {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 600px;
+    border: 1px solid rgba(42,47,43,0.07);
+    box-shadow: 0 4px 24px rgba(42,47,43,0.06);
+    margin-top: 8px;
+  }
+
+  .quiz-progress-wrap { margin-bottom: 28px; }
+  .quiz-progress-bar { height: 3px; background: rgba(42,47,43,0.08); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+  .quiz-progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width 0.4s ease; width: 20%; }
+  .quiz-progress-label { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+
+  .quiz-q { display: none; }
+  .quiz-q.active { display: block; }
+
+  .quiz-q-text { font-family: 'DM Serif Display', serif; font-size: 1.15rem; font-weight: 400; color: var(--charcoal); line-height: 1.4; margin-bottom: 20px; }
+  .quiz-multi-hint { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 400; color: var(--text-muted); font-style: normal; display: block; margin-top: 4px; }
+
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+
+  .quiz-opt {
+    border: 1.5px solid rgba(42,47,43,0.1);
+    border-radius: 12px;
+    padding: 13px 16px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    font-weight: 400;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    text-align: left;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .quiz-opt:hover { border-color: var(--green); color: var(--charcoal); background: var(--green-light); }
+  .quiz-opt.selected { border-color: var(--green); background: var(--green-light); color: var(--charcoal); font-weight: 500; }
+
+  .qopt-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(42,47,43,0.15); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .quiz-opt.multi .qopt-dot { border-radius: 4px; }
+  .quiz-opt.selected .qopt-dot { background: var(--green); border-color: var(--green); }
+  .quiz-opt.selected .qopt-dot::after { content: ''; width: 6px; height: 6px; background: white; border-radius: 50%; }
+  .quiz-opt.multi.selected .qopt-dot::after { border-radius: 2px; }
+
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(42,47,43,0.07); }
+
+  .quiz-back { font-size: 0.82rem; color: var(--text-muted); background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 8px 0; }
+  .quiz-back:hover { color: var(--charcoal); }
+
+  .quiz-next { background: var(--charcoal); color: white; border: none; border-radius: 100px; padding: 12px 24px; font-size: 0.88rem; font-weight: 400; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+  .quiz-next:hover { background: var(--green); }
+  .quiz-next:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .quiz-result-badge { display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 0.68rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
+  .quiz-result-badge.tier1 { background: rgba(192,113,79,0.1); color: var(--terracotta); border: 1px solid rgba(192,113,79,0.2); }
+  .quiz-result-badge.tier2 { background: var(--green-light); color: var(--green); border: 1px solid rgba(107,158,122,0.2); }
+  .quiz-result-badge.tier3 { background: var(--cream-dark); color: var(--charcoal); border: 1px solid rgba(42,47,43,0.15); }
+
+  .quiz-result-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--charcoal); margin-bottom: 16px; line-height: 1.3; }
+  .quiz-score-bar { background: var(--cream-dark); border-radius: 100px; height: 8px; overflow: hidden; margin-bottom: 6px; }
+  .quiz-score-fill { height: 100%; border-radius: 100px; background: var(--green); transition: width 1s ease, background 1s ease; }
+  .quiz-score-labels { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-bottom: 16px; }
+  .quiz-result-desc { font-size: 0.88rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; }
+
 </style>
+
+<script>
+var qScores = {};
+var qMultiScores = {};
+var qTotal = 0;
+
+function qSelect(btn, qNum, score) {
+  var q = btn.closest('.quiz-q');
+  q.querySelectorAll('.quiz-opt').forEach(function(o) { o.classList.remove('selected'); });
+  btn.classList.add('selected');
+  qScores[qNum] = score;
+  var nb = document.getElementById('qnext-' + qNum);
+  if (nb) nb.disabled = false;
+}
+
+function qMulti(btn, qNum, score) {
+  btn.classList.toggle('selected');
+  if (!qMultiScores[qNum]) qMultiScores[qNum] = {};
+  var key = btn.textContent.trim().substring(0,20);
+  if (btn.classList.contains('selected')) {
+    qMultiScores[qNum][key] = score;
+  } else {
+    delete qMultiScores[qNum][key];
+  }
+  var total = 0;
+  for (var k in qMultiScores[qNum]) { total += qMultiScores[qNum][k]; }
+  qScores[qNum] = total;
+  var nb = document.getElementById('qnext-' + qNum);
+  if (nb) nb.disabled = Object.keys(qMultiScores[qNum]).length === 0;
+}
+
+function qNext(num) {
+  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
+  document.querySelector('[data-q="' + num + '"]').classList.add('active');
+  qUpdateProgress(num);
+}
+
+function qPrev(num) {
+  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
+  document.querySelector('[data-q="' + num + '"]').classList.add('active');
+  qUpdateProgress(num);
+}
+
+function qUpdateProgress(num) {
+  var pct = (num / 5) * 100;
+  document.getElementById('qprogress').style.width = pct + '%';
+  document.getElementById('qplabel').textContent = 'Question ' + num + ' of 5';
+}
+
+function qCalcTotal() {
+  qTotal = 0;
+  for (var k in qScores) { qTotal += qScores[k]; }
+}
+
+function qShowEmail() {
+  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
+  document.getElementById('quiz-email-step').classList.add('active');
+  document.getElementById('qprogress').style.width = '100%';
+  document.getElementById('qplabel').textContent = 'Almost done';
+}
+
+function qGetResult() {
+  qCalcTotal();
+  // Scoring weights: mindset and AI experience matter most, size least
+  // Q1 size: max 2, Q2 pain points multi: max 3, Q3 tech comfort: max 4
+  // Q4 AI experience: max 5, Q5 success vision multi: max 3
+  // Total max: 17
+  var singleTotal = (qScores[1] || 0) + (qScores[3] || 0) + (qScores[4] || 0);
+  var multiQ2 = Math.min(qScores[2] || 0, 3);
+  var multiQ5 = Math.min(qScores[5] || 0, 3);
+  var adjustedTotal = singleTotal + multiQ2 + multiQ5;
+
+  var badge, title, desc, fillPct, fillColor;
+  if (adjustedTotal <= 7) {
+    badge = '<span class="quiz-result-badge tier1">Just getting started</span>';
+    title = "AI is on the horizon for you.";
+    desc = "You're not there yet and that's completely fine. A free audit will give you a clear picture of where AI can eventually fit, and what to focus on first. No pressure, no jargon.";
+    fillPct = '22%';
+    fillColor = 'var(--terracotta)';
+  } else if (adjustedTotal <= 12) {
+    badge = '<span class="quiz-result-badge tier2">Ready to explore</span>';
+    title = "You're in exactly the right place.";
+    desc = "You know your pain points, you're open to change, and AI can make a real difference for your business right now. A free audit will show you 2 to 3 clear wins you can act on straight away.";
+    fillPct = '62%';
+    fillColor = 'var(--green)';
+  } else {
+    badge = '<span class="quiz-result-badge tier3">Early adopter</span>';
+    title = "You're already thinking the right way.";
+    desc = "You're forward-thinking, already experimenting, and there's real capability left to unlock. The businesses getting the most from AI right now are ones like yours. Let's talk about what's next.";
+    fillPct = '94%';
+    fillColor = 'var(--charcoal)';
+  }
+  return { badge: badge, title: title, desc: desc, fillPct: fillPct, fillColor: fillColor };
+}
+
+function qShowResult() {
+  var r = qGetResult();
+  document.getElementById('qresult-badge').innerHTML = r.badge;
+  document.getElementById('qresult-title').textContent = r.title;
+  document.getElementById('qresult-desc').textContent = r.desc;
+  document.getElementById('qscore-fill').style.width = r.fillPct;
+  document.getElementById('qscore-fill').style.background = r.fillColor;
+  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
+  document.getElementById('quiz-result-step').classList.add('active');
+  document.getElementById('qprogress').style.width = '100%';
+  document.getElementById('qplabel').textContent = 'Your result';
+}
+
+function qSubmitEmail() {
+  var name = document.getElementById('quiz-name').value.trim();
+  var email = document.getElementById('quiz-email').value.trim();
+  var r = qGetResult();
+
+  if (email) {
+    fetch('https://formspree.io/f/YOURFORMID', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        result: r.title,
+        score: qTotal,
+        source: 'AI Readiness Quiz'
+      })
+    });
+  }
+
+  qShowResult();
+}
+</script>
+
 </head>
 <body>
 
@@ -328,13 +528,8 @@ function handleFormSubmit(btn) {
     <span class="logo-ai">ai</span>
   </a>
   <div class="nav-right">
-    <div class="nav-links">
-      <a href="#" onclick="showPage('home'); scrollToSection('how'); return false;">How it works</a>
-      <a href="#" onclick="showPage('home'); scrollToSection('pricing'); return false;">Pricing</a>
-      <a href="#" onclick="showPage('faq'); return false;">FAQ</a>
-      <a href="#" onclick="showPage('blog'); return false;">Blog</a>
-    </div>
-    <a href="#" class="nav-cta" onclick="showPage('home'); scrollToSection('book'); return false;">Free audit</a>
+
+    <a href="#" class="nav-cta" onclick="showPage('home'); scrollToSection('book'); return false;">Book my free audit</a>
   </div>
 </nav>
 
@@ -348,12 +543,13 @@ function handleFormSubmit(btn) {
 <!-- HOME PAGE -->
 <div id="page-home" class="page active">
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Wellington, New Zealand</div>
   <h1>Big business<br/><em>capability.</em><br/>Local business heart.</h1>
   <p class="hero-sub">We help local businesses fix the small stuff that's eating their time, and build the big stuff that helps them grow.</p>
   <div class="hero-cta-group">
-    <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;">Book a free AI audit</a>
+    <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;">Book my free audit</a>
     <a href="#" class="btn-ghost" onclick="scrollToSection('how'); return false;">See how it works &rarr;</a>
   </div>
   <div class="pain-cards">
@@ -429,11 +625,117 @@ function handleFormSubmit(btn) {
   </div>
 </section>
 
+<!-- AI READINESS QUIZ -->
+<section class="quiz-section">
+  <div class="quiz-outer">
+    <div class="section-eyebrow" style="color:var(--terracotta);margin-bottom:12px;">Quick check</div>
+    <h2 class="section-title">Are you <em>AI ready?</em></h2>
+    <p class="section-body" style="margin-bottom:32px;">5 questions. 2 minutes. Find out where your business stands right now.</p>
+
+    <div class="quiz-card">
+      <div class="quiz-progress-wrap">
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qprogress"></div></div>
+        <div class="quiz-progress-label" id="qplabel">Question 1 of 5</div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="quiz-q active" data-q="1">
+        <div class="quiz-q-text">How many staff do you have?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="qSelect(this,1,1)"><span class="qopt-dot"></span>Just me</button>
+          <button class="quiz-opt" onclick="qSelect(this,1,1)"><span class="qopt-dot"></span>2 to 5</button>
+          <button class="quiz-opt" onclick="qSelect(this,1,2)"><span class="qopt-dot"></span>6 to 15</button>
+          <button class="quiz-opt" onclick="qSelect(this,1,2)"><span class="qopt-dot"></span>16 or more</button>
+        </div>
+        <div class="quiz-nav"><span></span><button class="quiz-next" id="qnext-1" disabled onclick="qNext(2)">Next &rarr;</button></div>
+      </div>
+
+      <!-- Q2 - MULTI SELECT -->
+      <div class="quiz-q" data-q="2">
+        <div class="quiz-q-text">Which of these eat the most time in your week? <span class="quiz-multi-hint">(select all that apply)</span></div>
+        <div class="quiz-options">
+          <button class="quiz-opt multi" onclick="qMulti(this,2,3)"><span class="qopt-dot"></span>Answering the same customer questions</button>
+          <button class="quiz-opt multi" onclick="qMulti(this,2,3)"><span class="qopt-dot"></span>Admin, invoicing, or paperwork</button>
+          <button class="quiz-opt multi" onclick="qMulti(this,2,2)"><span class="qopt-dot"></span>Scheduling and follow-ups</button>
+          <button class="quiz-opt multi" onclick="qMulti(this,2,2)"><span class="qopt-dot"></span>Social media or marketing</button>
+          <button class="quiz-opt multi" onclick="qMulti(this,2,1)"><span class="qopt-dot"></span>Not sure yet</button>
+        </div>
+        <div class="quiz-nav"><button class="quiz-back" onclick="qPrev(1)">&larr; Back</button><button class="quiz-next" id="qnext-2" disabled onclick="qNext(3)">Next &rarr;</button></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-q" data-q="3">
+        <div class="quiz-q-text">How comfortable are you with new technology?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="qSelect(this,3,1)"><span class="qopt-dot"></span>I avoid it where possible</button>
+          <button class="quiz-opt" onclick="qSelect(this,3,2)"><span class="qopt-dot"></span>I use the basics — email, Google, maybe Xero</button>
+          <button class="quiz-opt" onclick="qSelect(this,3,3)"><span class="qopt-dot"></span>Reasonably comfortable trying new tools</button>
+          <button class="quiz-opt" onclick="qSelect(this,3,4)"><span class="qopt-dot"></span>I'm an early adopter</button>
+        </div>
+        <div class="quiz-nav"><button class="quiz-back" onclick="qPrev(2)">&larr; Back</button><button class="quiz-next" id="qnext-3" disabled onclick="qNext(4)">Next &rarr;</button></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-q" data-q="4">
+        <div class="quiz-q-text">Have you tried using AI in your business yet?</div>
+        <div class="quiz-options">
+          <button class="quiz-opt" onclick="qSelect(this,4,1)"><span class="qopt-dot"></span>No, not at all</button>
+          <button class="quiz-opt" onclick="qSelect(this,4,2)"><span class="qopt-dot"></span>I've played with ChatGPT a bit</button>
+          <button class="quiz-opt" onclick="qSelect(this,4,4)"><span class="qopt-dot"></span>I use it occasionally for specific things</button>
+          <button class="quiz-opt" onclick="qSelect(this,4,5)"><span class="qopt-dot"></span>Yes, regularly — it's part of how I work</button>
+        </div>
+        <div class="quiz-nav"><button class="quiz-back" onclick="qPrev(3)">&larr; Back</button><button class="quiz-next" id="qnext-4" disabled onclick="qNext(5)">Next &rarr;</button></div>
+      </div>
+
+      <!-- Q5 - MULTI SELECT -->
+      <div class="quiz-q" data-q="5">
+        <div class="quiz-q-text">What would success look like for you? <span class="quiz-multi-hint">(select all that apply)</span></div>
+        <div class="quiz-options">
+          <button class="quiz-opt multi" onclick="qMulti(this,5,2)"><span class="qopt-dot"></span>Getting time back each week</button>
+          <button class="quiz-opt multi" onclick="qMulti(this,5,2)"><span class="qopt-dot"></span>Less manual admin</button>
+          <button class="quiz-opt multi" onclick="qMulti(this,5,3)"><span class="qopt-dot"></span>Better customer communication</button>
+          <button class="quiz-opt multi" onclick="qMulti(this,5,3)"><span class="qopt-dot"></span>Growing without hiring more staff</button>
+          <button class="quiz-opt multi" onclick="qMulti(this,5,3)"><span class="qopt-dot"></span>All of the above</button>
+        </div>
+        <div class="quiz-nav"><button class="quiz-back" onclick="qPrev(4)">&larr; Back</button><button class="quiz-next" id="qnext-5" disabled onclick="qShowEmail()">See my result &rarr;</button></div>
+      </div>
+
+      <!-- EMAIL CAPTURE -->
+      <div class="quiz-q" id="quiz-email-step">
+        <div class="quiz-q-text">Want us to send you a personalised breakdown with your result?</div>
+        <p style="font-size:0.82rem;color:var(--text-muted);font-weight:300;margin-bottom:20px;line-height:1.6;">Takes 10 seconds. We'll email you your result and a note on what it means for your business.</p>
+        <div class="form-row" style="margin-bottom:14px;">
+          <label class="form-label">Your name</label>
+          <input type="text" class="form-input" id="quiz-name" placeholder="Jane Smith" />
+        </div>
+        <div class="form-row" style="margin-bottom:20px;">
+          <label class="form-label">Email address</label>
+          <input type="email" class="form-input" id="quiz-email" placeholder="jane@smithscafe.co.nz" />
+        </div>
+        <button class="quiz-next" style="width:100%;padding:14px;" onclick="qSubmitEmail()">Send my results</button>
+        <button class="quiz-back" style="width:100%;text-align:center;margin-top:12px;padding:8px;" onclick="qShowResult()">Skip — just show me my result</button>
+      </div>
+
+      <!-- RESULT -->
+      <div class="quiz-q" id="quiz-result-step">
+        <div class="quiz-result-badge" id="qresult-badge"></div>
+        <div class="quiz-result-title" id="qresult-title"></div>
+        <div class="quiz-score-bar"><div class="quiz-score-fill" id="qscore-fill"></div></div>
+        <div class="quiz-score-labels"><span>Earlier stage</span><span>Ready to go</span></div>
+        <p class="quiz-result-desc" id="qresult-desc"></p>
+        <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;" style="display:block;text-align:center;margin-top:24px;">Book my free audit</a>
+        <p style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:10px;">Free. No obligation. Joel will be in touch within one business day.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- HOW IT WORKS -->
 <section class="how-section" id="how">
   <div class="how-inner">
     <div class="section-eyebrow">The process</div>
-    <h2 class="section-title">Simple from day one.<br/><em>Results from week one.</em></h2>
+    <h2 class="section-title">Simple from<br/><em>day one.</em></h2>
     <div class="steps">
       <div class="step">
         <div class="step-num">01</div>
@@ -445,7 +747,7 @@ function handleFormSubmit(btn) {
         <div class="step-num">02</div>
         <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
         <h3>Your personalised report</h3>
-        <p>Within 24 hours you'll receive a full report. A SWOT analysis, market context, and the top AI opportunities specific to your business. This alone is worth the conversation.</p>
+        <p>Within 24 hours you'll receive a full report. A SWOT analysis, market context, and the top AI opportunities for your business. This alone is worth the conversation.</p>
       </div>
       <div class="step">
         <div class="step-num">03</div>
@@ -457,57 +759,13 @@ function handleFormSubmit(btn) {
   </div>
 </section>
 
-<!-- WHAT'S INCLUDED -->
-<section class="section" style="background:var(--cream-dark);">
-  <div class="section-inner">
-    <div class="section-eyebrow">What's included</div>
-    <h2 class="section-title">We don't just set it up.<br/><em>We stay accessible.</em></h2>
-    <div class="value-list">
-      <div class="value-item">
-        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div><div class="value-title">Free AI audit</div><div class="value-desc">No obligation. Sing out when you're ready.</div></div>
-      </div>
-      <div class="value-item">
-        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div><div class="value-title">Custom built for your business</div><div class="value-desc">Built for where your business is and where it's going.</div></div>
-      </div>
-      <div class="value-item">
-        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div><div class="value-title">Plain language, always</div><div class="value-desc">No jargon. If it doesn't make sense, we haven't explained it well enough.</div></div>
-      </div>
-      <div class="value-item">
-        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div><div class="value-title">NZ owned and operated</div><div class="value-desc">Local business helping local business. That's not a tagline, it's just true.</div></div>
-      </div>
-      <div class="value-item">
-        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div><div class="value-title">Honest advice, always</div><div class="value-desc">If we don't think AI is the right move for your business, we'll say so.</div></div>
-      </div>
-      <div class="value-item">
-        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div><div class="value-title">No disappearing act</div><div class="value-desc">We're still here after delivery. That's a promise, not a tagline.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
+<!-- WHO WE ARE - combined about + joel -->
 <section class="about-section">
-  <div class="about-inner">
+  <div class="section-inner">
     <div class="section-eyebrow">Who are we</div>
     <h2 class="section-title">Business first.<br/><em>AI second.</em></h2>
-    <p class="section-body">Most AI companies lead with tools. We lead with your business. We're not here to impress you with technology. We're here to help you solve real problems and build something that lasts.</p>
-    <div class="about-quote-card">
-      <div class="quote-text">“What matters hasn't changed. Your business, your customers. AI can just help you serve them better.”</div>
-      <div class="quote-attr"><strong>Joel Norris</strong><span>Founder, Local AI</span></div>
-    </div>
-    <div class="value-tags">
-      <span class="value-tag">Wellington-based</span>
-      <span class="value-tag">Business first</span>
-      <span class="value-tag">No lock-in</span>
-      <span class="value-tag">Plain language</span>
-      <span class="value-tag">We stay accessible</span>
-    </div>
+  </div>
+  <div class="about-inner" style="max-width:1080px;margin:24px auto 0;padding:0 24px;">
     <div class="joel-card">
       <img src="./joel.jpg" alt="Joel Norris" class="joel-photo" />
       <div>
@@ -515,71 +773,33 @@ function handleFormSubmit(btn) {
         <div class="joel-name">Joel Norris</div>
         <div class="joel-role">Founder, Local AI</div>
         <p class="joel-text">I'm Joel. I'm a Wellington-based recruiter who got deep into AI and realised local businesses were being left behind. So I built something about it.</p>
-        <p class="joel-text">I start every client relationship the same way. With curiosity, a real conversation, and a genuine interest in what you're trying to solve and how we can make things better.</p>
+        <p class="joel-text">I start every client relationship the same way. With curiosity, a real conversation, and a genuine interest in what you're trying to solve.</p>
         <a href="mailto:joel@localai.nz" class="joel-email">joel@localai.nz</a>
+      </div>
+    </div>
+    <div class="about-quote-card">
+      <div class="quote-text">"What matters hasn't changed. Your business, your customers. AI can just help you serve them better."</div>
+      <div class="quote-attr"><strong>Joel Norris</strong><span>Founder, Local AI</span></div>
+      <div class="trust-tags" style="margin-top:24px;">
+        <span class="trust-tag">Wellington-based</span>
+        <span class="trust-tag">Business first</span>
+        <span class="trust-tag">No lock-in</span>
+        <span class="trust-tag">Plain language</span>
+        <span class="trust-tag">We stay accessible</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
-<section class="pricing-section" id="pricing">
-  <div class="pricing-inner">
-    <div class="section-eyebrow">Pricing</div>
-    <h2 class="section-title">Straightforward.<br/><em>No surprises.</em></h2>
-    <p class="section-body">Start with a free audit. We scope everything together from there.</p>
-    <div class="pricing-steps">
-      <div class="pricing-step">
-        <div class="ps-num">01</div>
-        <div class="ps-body">
-          <div class="ps-label">Start here</div>
-          <div class="ps-name">Free AI audit</div>
-          <p class="ps-desc">30 minutes to understand your business and how AI can genuinely help it. No obligation. Just a real conversation about where you are and where you want to go. You'll have your personalised report within 24 hours.</p>
-          <div class="ps-includes">
-            <div class="ps-include"><div class="feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Full business audit conversation</div>
-            <div class="ps-include"><div class="feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>AI-generated report within 24hrs</div>
-            <div class="ps-include"><div class="feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>SWOT analysis and top AI use cases</div>
-            <div class="ps-include"><div class="feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Three implementation scenarios</div>
-          </div>
-          <div class="ps-free">Free</div>
-        </div>
-      </div>
-      <div class="pricing-arrow">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 9l-7 7-7-7"/></svg>
-      </div>
-      <div class="pricing-step">
-        <div class="ps-num">02</div>
-        <div class="ps-body">
-          <div class="ps-label">Then</div>
-          <div class="ps-name">We scope it together</div>
-          <p class="ps-desc">We lead with curiosity and a genuine understanding of your business, your needs, and where you want to take it. If there's a fit, we put together a scope based on what your business actually needs. No templates. No guesswork.</p>
-          <p class="ps-desc">If AI isn't the right move right now, we'll tell you that too.</p>
-          <div class="ps-honesty">
-            <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            No locked-in contracts or terms. We'll always be upfront about ongoing costs before you commit to anything.
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:36px;">
-      <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;">Book your free audit and we'll talk through pricing honestly</a>
-      <div class="cta-note" style="margin-top:12px;">30 minutes. No obligation. No surprises.</div>
-    </div>
-  </div>
-</section>
 
 <!-- BOOKING FORM -->
 <section class="booking-section" id="book">
   <div class="booking-inner">
     <div class="booking-left">
-      <div class="section-eyebrow">Book your free audit</div>
-      <h2 class="section-title">30 minutes. Real conversation.<br/><em>Real answers.</em></h2>
+      <div class="section-eyebrow">Book my free audit</div>
+      <h2 class="section-title">Book my free<br/><em>audit.</em></h2>
       <p class="section-body">No obligation. No tech knowledge required. We'll figure out together whether AI can genuinely make a difference for your business.</p>
-      <div class="booking-promises">
-        <div class="booking-promise"><div class="bp-dot"></div>Free. No credit card, no commitment.</div>
-        <div class="booking-promise"><div class="bp-dot"></div>AI-generated report delivered within 24hrs</div>
-        <div class="booking-promise"><div class="bp-dot"></div>If AI isn't right for you, we'll say so</div>
-      </div>
+
     </div>
     <div class="booking-right">
       <div class="booking-form-card">
@@ -595,36 +815,11 @@ function handleFormSubmit(btn) {
           <label class="form-label">Email <span class="form-required">*</span></label>
           <input type="email" class="form-input" placeholder="jane@smithscafe.co.nz" />
         </div>
-        <div class="form-row">
-          <label class="form-label">Business size</label>
-          <select class="form-input form-select">
-            <option value="" disabled selected>How many staff?</option>
-            <option>Just me</option>
-            <option>2-5 staff</option>
-            <option>6-10 staff</option>
-            <option>11-20 staff</option>
-            <option>20+ staff</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label class="form-label">Biggest time drain <span class="form-optional">(optional)</span></label>
-          <textarea class="form-input form-textarea" placeholder="e.g. Answering the same customer questions over and over, chasing invoices, scheduling..."></textarea>
-        </div>
+
         <button class="form-submit" onclick="handleFormSubmit(this)">Book my free audit</button>
         <div class="form-note">We'll reply within one business day. Your details are kept private and never shared.</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- FINAL CTA -->
-<section class="cta-section">
-  <div class="cta-inner">
-    <div class="section-eyebrow" style="display:inline-block;margin-bottom:16px;">Still thinking?</div>
-    <h2>Not sure if AI is right<br/>for you? <em>Ask us.</em></h2>
-    <p>The audit is free. The conversation is honest. If AI isn't the right move right now, we'll tell you that too.</p>
-    <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;">Book a free 30-min audit</a>
-    <div class="cta-note">No commitment. No tech knowledge required.</div>
   </div>
 </section>
 
@@ -667,7 +862,7 @@ function handleFormSubmit(btn) {
     </div>
     <div class="faq-item">
       <button class="faq-question" onclick="toggleFaq(this)">Will I be dependent on you after the build?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
-      <div class="faq-answer">It depends on what you're looking for in terms of AI capability. Every build comes with proper handover training so you understand what's been built and how it works. That said, most automations live on platforms we manage on your behalf, so we'll always be upfront about what that means for ongoing costs and involvement. There are no locked-in contracts or terms. If you'd prefer a setup with minimal ongoing reliance on us, we'll work to find the right option. We do encourage businesses to stay engaged over time though. AI moves fast. We can keep your tools current, increase capability as your business grows, and make sure what we've built is still working hard for you.</div>
+      <div class="faq-answer">It depends on what you're looking for in terms of AI capability. Every build comes with proper handover training so you understand what's been built and how it works. Most automations live on platforms we manage on your behalf, so we'll always be upfront about what that means for ongoing costs. There are no locked-in contracts. If you'd prefer minimal ongoing reliance on us, we'll work to find the right option. That said, we do encourage businesses to stay engaged over time. AI moves fast and we can keep your tools current as your business grows.</div>
     </div>
   </div>
 
@@ -679,7 +874,7 @@ function handleFormSubmit(btn) {
     </div>
     <div class="faq-item">
       <button class="faq-question" onclick="toggleFaq(this)">How does payment work?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
-      <div class="faq-answer">For build projects we use a 50/50 structure. Half when you sign the Statement of Work, half on delivery. This keeps things fair on both sides. For the monthly retainer, it's billed monthly with 30 days cancellation notice.</div>
+      <div class="faq-answer">For build projects we use a 50/50 structure. Half when you sign the Statement of Work, half on delivery. For the monthly retainer, it's billed monthly with 30 days cancellation notice.</div>
     </div>
     <div class="faq-item">
       <button class="faq-question" onclick="toggleFaq(this)">What's included in the monthly retainer?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
@@ -687,7 +882,6 @@ function handleFormSubmit(btn) {
     </div>
   </div>
 
-  <!-- TO AI OR NOT TO AI -->
   <div class="to-ai-section">
     <div class="to-ai-label">To AI or Not To AI</div>
     <div class="to-ai-sub">The bigger questions local business owners are asking. Honest answers.</div>
@@ -731,67 +925,32 @@ function handleFormSubmit(btn) {
   </div>
   <div class="blog-grid">
     <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">01</span></div>
-      <div class="blog-card-body">
-        <span class="blog-tag">Getting started</span>
-        <div class="blog-title">What is AI? The no jargon, no fluff explanation.</div>
-        <div class="blog-excerpt">Everyone's talking about it. Not everyone's explaining it. Here's what AI actually is, what it can do today, and what it still can't do. Plain language. No hype.</div>
-        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
-      </div>
+      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">01</span></div>
+      <div class="blog-card-body"><span class="blog-tag">Getting started</span><div class="blog-title">What is AI? The no jargon, no fluff explanation.</div><div class="blog-excerpt">Everyone's talking about it. Not everyone's explaining it. Here's what AI actually is, what it can do today, and what it still can't do.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
     </div>
     <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--green);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.15);font-size:3rem;font-weight:900;">02</span></div>
-      <div class="blog-card-body">
-        <span class="blog-tag">Getting started</span>
-        <div class="blog-title">What AI can actually do for a small business today</div>
-        <div class="blog-excerpt">Not the hype. Not the sci-fi version. What it can realistically do for a cafe, a gym, or a property manager right now, today.</div>
-        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
-      </div>
+      <div class="blog-card-thumb" style="background:var(--green);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.15);font-size:3rem;font-weight:900;">02</span></div>
+      <div class="blog-card-body"><span class="blog-tag">Getting started</span><div class="blog-title">What AI can actually do for a small business today</div><div class="blog-excerpt">Not the hype. Not the sci-fi version. What it can realistically do for a cafe, a gym, or a property manager right now, today.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
     </div>
     <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--terracotta);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.15);font-size:3rem;font-weight:900;">03</span></div>
-      <div class="blog-card-body">
-        <span class="blog-tag">Real examples</span>
-        <div class="blog-title">The 3 hours a week you didn't know you were losing</div>
-        <div class="blog-excerpt">Most business owners are doing the same manual tasks over and over. Here's what that actually costs and what fixing it looks like.</div>
-        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
-      </div>
+      <div class="blog-card-thumb" style="background:var(--terracotta);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.15);font-size:3rem;font-weight:900;">03</span></div>
+      <div class="blog-card-body"><span class="blog-tag">Real examples</span><div class="blog-title">The 3 hours a week you didn't know you were losing</div><div class="blog-excerpt">Most business owners are doing the same manual tasks over and over. Here's what that actually costs and what fixing it looks like.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
     </div>
     <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--cream-dark);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(42,47,43,0.1);font-size:3rem;font-weight:900;">04</span></div>
-      <div class="blog-card-body">
-        <span class="blog-tag">Myth busting</span>
-        <div class="blog-title">AI isn't just for big companies. Here's the proof.</div>
-        <div class="blog-excerpt">The tools that used to cost enterprise budgets are now within reach for a business with 3 staff. Here's what's changed and what it means for you.</div>
-        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
-      </div>
+      <div class="blog-card-thumb" style="background:var(--cream-dark);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(42,47,43,0.1);font-size:3rem;font-weight:900;">04</span></div>
+      <div class="blog-card-body"><span class="blog-tag">Myth busting</span><div class="blog-title">AI isn't just for big companies. Here's the proof.</div><div class="blog-excerpt">The tools that used to cost enterprise budgets are now within reach for a business with 3 staff. Here's what's changed.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
     </div>
     <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">05</span></div>
-      <div class="blog-card-body">
-        <span class="blog-tag">How to</span>
-        <div class="blog-title">How to know if you're ready for AI. A simple checklist.</div>
-        <div class="blog-excerpt">Before you spend a dollar on AI tools, answer these five questions. They'll tell you whether now is the right time and what to do if it isn't.</div>
-        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
-      </div>
+      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">05</span></div>
+      <div class="blog-card-body"><span class="blog-tag">How to</span><div class="blog-title">How to know if you're ready for AI. A simple checklist.</div><div class="blog-excerpt">Before you spend a dollar on AI tools, answer these five questions. They'll tell you whether now is the right time.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
     </div>
     <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--green-light);border-bottom:1px solid rgba(107,158,122,0.15);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(107,158,122,0.3);font-size:3rem;font-weight:900;">06</span></div>
-      <div class="blog-card-body">
-        <span class="blog-tag">Behind the scenes</span>
-        <div class="blog-title">Why I started Local AI and what I've learned so far</div>
-        <div class="blog-excerpt">The honest version of how this started, what's worked, what hasn't, and why I believe local businesses deserve better access to this technology.</div>
-        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
-      </div>
+      <div class="blog-card-thumb" style="background:var(--green-light);border-bottom:1px solid rgba(107,158,122,0.15);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(107,158,122,0.3);font-size:3rem;font-weight:900;">06</span></div>
+      <div class="blog-card-body"><span class="blog-tag">Behind the scenes</span><div class="blog-title">Why I started Local AI and what I've learned so far</div><div class="blog-excerpt">The honest version of how this started, what's worked, what hasn't, and why local businesses deserve better access to AI.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
     </div>
     <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">07</span></div>
-      <div class="blog-card-body">
-        <span class="blog-tag">Local focus</span>
-        <div class="blog-title">AI in Wellington: what local businesses are doing (and not doing)</div>
-        <div class="blog-excerpt">A ground-level look at where Wellington small businesses are on their AI journey and the simple first steps that are making a difference.</div>
-        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
-      </div>
+      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">07</span></div>
+      <div class="blog-card-body"><span class="blog-tag">Local focus</span><div class="blog-title">AI in Wellington: what local businesses are doing (and not doing)</div><div class="blog-excerpt">A ground-level look at where Wellington small businesses are on their AI journey and the simple first steps making a difference.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
     </div>
   </div>
   <div style="margin-top:48px;text-align:center;padding:40px 0;border-top:1px solid rgba(42,47,43,0.08);">
