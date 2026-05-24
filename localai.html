@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Local AI — AI for local business</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.page-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('page-' + name).classList.add('active');
+  var tabs = document.querySelectorAll('.page-tab');
+  var map = { home: 0, faq: 1, blog: 2 };
+  if (tabs[map[name]]) tabs[map[name]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function scrollToSection(id) {
+  setTimeout(function() {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
+function toggleFaq(btn) {
+  var item = btn.closest('.faq-item');
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(i) { i.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
+}
+function handleFormSubmit(btn) {
+  var card = btn.closest('.booking-form-card');
+  var inputs = card.querySelectorAll('input[type="text"], input[type="email"]');
+  var valid = true;
+  inputs.forEach(function(input) {
+    input.style.borderColor = '';
+    if (!input.value.trim()) {
+      input.style.borderColor = 'var(--terracotta)';
+      valid = false;
+    }
+  });
+  if (!valid) return;
+  card.innerHTML = '<div class="form-success"><div class="form-success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><h3>We\'ll be in touch.</h3><p>Thanks for reaching out. Joel will be in touch within one business day to set up a time. Check your inbox and your spam folder just in case.</p></div>';
+}
+</script>
+<style>
+  :root {
+    --cream: #F4F0E8;
+    --cream-dark: #EAE4D6;
+    --charcoal: #2A2F2B;
+    --green: #6B9E7A;
+    --green-light: #EAF2ED;
+    --terracotta: #C0714F;
+    --text-muted: rgba(42,47,43,0.45);
+    --text-soft: rgba(42,47,43,0.68);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--charcoal); overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; opacity: 0.5; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(244,240,232,0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(42,47,43,0.07); padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: baseline; text-decoration: none; gap: 0; }
+  .logo-local { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; color: var(--charcoal); letter-spacing: -0.5px; }
+  .logo-dot { width: 5px; height: 5px; background: var(--terracotta); border-radius: 50%; margin: 0 2px 3px 2px; flex-shrink: 0; display: inline-block; }
+  .logo-ai { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; font-size: 1.4rem; color: var(--green); letter-spacing: -0.5px; }
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .nav-links { display: none; gap: 28px; }
+  .nav-links a { font-size: 0.82rem; font-weight: 500; color: var(--text-soft); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--charcoal); }
+  @media (min-width: 768px) { .nav-links { display: flex; } }
+  .nav-cta { background: var(--charcoal); color: white; padding: 10px 20px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; text-decoration: none; letter-spacing: 0.01em; transition: background 0.2s; white-space: nowrap; cursor: pointer; }
+  .nav-cta:hover { background: var(--green); }
+
+  /* PAGE TABS */
+  .page-tabs { display: flex; border-bottom: 1px solid rgba(42,47,43,0.08); background: var(--cream); position: sticky; top: 64px; z-index: 90; overflow-x: auto; scrollbar-width: none; }
+  .page-tabs::-webkit-scrollbar { display: none; }
+  .page-tab { flex-shrink: 0; padding: 14px 20px; font-size: 0.82rem; font-weight: 500; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+  .page-tab.active { color: var(--charcoal); border-bottom-color: var(--charcoal); font-weight: 600; }
+  .page-tab:hover { color: var(--charcoal); }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero { padding: 64px 24px 56px; max-width: 1080px; margin: 0 auto; }
+  @media (min-width: 768px) { .hero { padding: 96px 24px 80px; } .hero h1 { font-size: 5rem; } }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 7px; background: var(--green-light); border: 1px solid rgba(107,158,122,0.2); border-radius: 100px; padding: 5px 12px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 28px; }
+  .hero-eyebrow-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.4rem; font-weight: 900; line-height: 1.05; letter-spacing: -1.5px; color: var(--charcoal); margin-bottom: 24px; }
+  .hero h1 em { font-style: italic; color: var(--green); }
+  .hero-sub { font-size: 1.05rem; line-height: 1.75; color: var(--text-soft); font-weight: 300; margin-bottom: 36px; max-width: 560px; }
+  .hero-cta-group { display: flex; flex-direction: column; gap: 12px; max-width: 320px; }
+  @media (min-width: 480px) { .hero-cta-group { flex-direction: row; max-width: none; align-items: center; } }
+  .btn-primary { background: var(--charcoal); color: white; padding: 16px 28px; border-radius: 100px; font-weight: 600; font-size: 0.95rem; text-decoration: none; text-align: center; display: inline-block; letter-spacing: 0.01em; transition: background 0.2s; cursor: pointer; }
+  .btn-primary:hover { background: var(--green); }
+  .btn-ghost { color: var(--charcoal); font-weight: 500; font-size: 0.88rem; text-decoration: none; opacity: 0.6; display: flex; align-items: center; gap: 6px; padding: 8px 0; white-space: nowrap; cursor: pointer; }
+  .btn-ghost:hover { opacity: 1; }
+  .pain-cards { display: flex; flex-direction: column; gap: 10px; margin-top: 48px; }
+  @media (min-width: 768px) { .pain-cards { flex-direction: row; } }
+  .pain-card { background: white; border-radius: 14px; padding: 18px 20px; font-size: 0.9rem; font-style: italic; color: var(--text-soft); line-height: 1.6; border-left: 3px solid var(--green); font-weight: 300; flex: 1; }
+  .pain-card:nth-child(2) { border-left-color: var(--terracotta); }
+
+  /* TICKER */
+  .ticker { background: var(--charcoal); padding: 14px 0; overflow: hidden; white-space: nowrap; }
+  .ticker-inner { display: inline-flex; animation: ticker 22s linear infinite; }
+  .ticker-item { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); padding: 0 24px; }
+  .ticker-item span { color: var(--green); margin-right: 8px; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* STATS STRIP */
+  .stats-strip { background: white; border-bottom: 1px solid rgba(42,47,43,0.07); padding: 24px; }
+  .stats-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr; align-items: center; }
+  @media (max-width: 600px) { .stats-inner { grid-template-columns: 1fr 1fr; gap: 0; } }
+  .stat-item { text-align: center; padding: 16px 12px; }
+  .stat-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; white-space: nowrap; }
+  @media (max-width: 600px) { .stat-value { font-size: 1.15rem; } }
+  .stat-divider { width: 1px; height: 40px; background: rgba(42,47,43,0.1); justify-self: center; }
+  @media (max-width: 600px) { .stat-divider { display: none; } .stat-item { padding: 16px 8px; border-bottom: 1px solid rgba(42,47,43,0.06); } .stat-item:nth-child(1), .stat-item:nth-child(3) { border-right: 1px solid rgba(42,47,43,0.06); } .stat-item:nth-child(5), .stat-item:nth-child(7) { border-bottom: none; } }
+
+  /* SECTIONS */
+  .section { padding: 72px 24px; }
+  .section-inner { max-width: 1080px; margin: 0 auto; }
+  .section-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 12px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.5px; color: var(--charcoal); margin-bottom: 16px; }
+  .section-title em { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; font-style: italic; color: var(--green); letter-spacing: -0.5px; line-height: 1.1; }
+  .how-section .section-title { font-size: 2.4rem; }
+  .how-section .section-title em { font-size: 2.4rem; font-weight: 700; font-style: italic; color: var(--green); }
+  .booking-section .section-title { font-size: 2.4rem; }
+  .booking-section .section-title em { font-size: 2.4rem; font-weight: 700; font-style: italic; }
+  .cta-section h2 em { font-family: 'Playfair Display', serif; font-size: inherit; font-weight: 700; font-style: italic; color: var(--green); }
+  .faq-header h2 em { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; color: var(--green); }
+  .blog-header h2 em { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; color: var(--green); }
+  .section-body { font-size: 0.95rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; max-width: 560px; }
+
+  /* INDUSTRIES */
+  .industries-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 32px; }
+  @media (min-width: 600px) { .industries-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 900px) { .industries-grid { grid-template-columns: repeat(6, 1fr); } }
+  .industry-chip { background: white; border: 1px solid rgba(42,47,43,0.08); border-radius: 14px; padding: 16px 14px; display: flex; align-items: center; gap: 10px; transition: box-shadow 0.2s; }
+  .industry-chip:hover { box-shadow: 0 4px 16px rgba(42,47,43,0.08); }
+  .industry-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--cream); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .industry-icon svg { width: 16px; height: 16px; }
+  .industry-label { font-size: 0.78rem; font-weight: 600; color: var(--charcoal); line-height: 1.3; }
+
+  /* HOW IT WORKS */
+  .how-section { background: var(--charcoal); padding: 72px 24px; }
+  .how-inner { max-width: 1080px; margin: 0 auto; }
+  .how-section .section-eyebrow { color: var(--green); }
+  .how-section .section-title { color: white; }
+  .how-section .section-title em { color: var(--green); }
+  .steps { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 40px; }
+  @media (min-width: 768px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+  .step { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 28px 24px; position: relative; overflow: hidden; }
+  .step-num { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.05); line-height: 1; position: absolute; top: 12px; right: 16px; letter-spacing: -2px; }
+  .step-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--green); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+  .step-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+  .step h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.3; }
+  .step p { font-size: 0.85rem; line-height: 1.75; color: rgba(255,255,255,0.42); font-weight: 300; }
+
+  /* WHAT'S INCLUDED */
+  .value-list { display: flex; flex-direction: column; gap: 8px; margin-top: 32px; }
+  @media (min-width: 768px) { .value-list { display: grid; grid-template-columns: 1fr 1fr; } }
+  .value-item { display: flex; align-items: flex-start; gap: 14px; padding: 18px; border-radius: 14px; background: white; }
+  .value-check { width: 22px; height: 22px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .value-check svg { width: 10px; height: 10px; stroke: white; fill: none; stroke-width: 2.5; }
+  .value-title { font-weight: 600; font-size: 0.92rem; color: var(--charcoal); margin-bottom: 4px; }
+  .value-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+
+  /* ABOUT */
+  .about-section { padding: 72px 24px; }
+  .about-inner { max-width: 1080px; margin: 0 auto; }
+  .about-quote-card { background: var(--charcoal); border-radius: 20px; padding: 36px 32px; margin-top: 32px; position: relative; overflow: hidden; max-width: 640px; }
+  .about-quote-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(107,158,122,0.18) 0%, transparent 70%); border-radius: 50%; }
+  .quote-mark { display: none; }
+  .quote-text { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; font-style: italic; color: white; line-height: 1.55; margin-bottom: 24px; quotes: none; }
+  .quote-attr strong { display: block; font-size: 0.84rem; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 2px; }
+  .quote-attr span { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
+  .value-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .value-tag { background: var(--green-light); color: var(--green); font-size: 0.72rem; font-weight: 600; padding: 6px 14px; border-radius: 100px; border: 1px solid rgba(107,158,122,0.2); }
+
+  /* JOEL CARD */
+  .joel-card { margin-top: 40px; background: white; border-radius: 20px; border: 1px solid rgba(42,47,43,0.07); padding: 32px; display: flex; flex-direction: column; gap: 28px; max-width: 640px; }
+  @media (min-width: 560px) { .joel-card { flex-direction: row; align-items: flex-start; } }
+  .joel-photo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; object-position: center top; display: block; border: 3px solid var(--green-light); flex-shrink: 0; }
+  .joel-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; color: var(--charcoal); margin-bottom: 2px; }
+  .joel-role { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+  .joel-text { font-size: 0.88rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; margin-bottom: 10px; }
+  .joel-email { display: inline-block; margin-top: 6px; font-size: 0.82rem; font-weight: 600; color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(107,158,122,0.3); padding-bottom: 1px; }
+  .joel-email:hover { border-color: var(--green); }
+
+  /* PRICING */
+  .pricing-section { padding: 72px 24px; background: var(--cream-dark); }
+  .pricing-inner { max-width: 1080px; margin: 0 auto; }
+  .pricing-steps { display: flex; flex-direction: column; gap: 4px; margin-top: 36px; max-width: 760px; }
+  .pricing-step { background: white; border-radius: 20px; padding: 32px 28px; border: 1px solid rgba(42,47,43,0.07); display: flex; gap: 24px; align-items: flex-start; }
+  .ps-num { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: rgba(42,47,43,0.07); line-height: 1; flex-shrink: 0; width: 44px; margin-top: 2px; }
+  .ps-body { flex: 1; }
+  .ps-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 4px; }
+  .ps-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--charcoal); margin-bottom: 12px; line-height: 1.2; }
+  .ps-desc { font-size: 0.88rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; margin-bottom: 16px; }
+  .ps-includes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .ps-include { display: flex; align-items: center; gap: 10px; font-size: 0.83rem; color: var(--text-soft); line-height: 1.5; }
+  .feat-check { width: 16px; height: 16px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .feat-check svg { width: 8px; height: 8px; stroke: var(--green); fill: none; stroke-width: 2; }
+  .ps-free { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--green); letter-spacing: -0.5px; }
+  .ps-honesty { display: flex; align-items: flex-start; gap: 10px; background: var(--green-light); border: 1px solid rgba(107,158,122,0.2); border-radius: 12px; padding: 14px 16px; font-size: 0.82rem; color: var(--charcoal); line-height: 1.65; margin-top: 4px; }
+  .ps-honesty svg { flex-shrink: 0; margin-top: 2px; stroke: var(--green); fill: none; }
+  .pricing-arrow { display: flex; align-items: center; padding: 4px 0 4px 44px; color: rgba(42,47,43,0.2); }
+
+  /* BOOKING FORM */
+  .booking-section { padding: 80px 24px; background: var(--charcoal); }
+  .booking-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 48px; }
+  @media (min-width: 860px) { .booking-inner { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .booking-section .section-eyebrow { color: var(--green); }
+  .booking-section .section-title { color: white; }
+  .booking-section .section-title em { color: var(--green); }
+  .booking-section .section-body { color: rgba(255,255,255,0.45); margin-bottom: 32px; }
+  .booking-promises { display: flex; flex-direction: column; gap: 14px; }
+  .booking-promise { display: flex; align-items: center; gap: 12px; font-size: 0.88rem; color: rgba(255,255,255,0.5); font-weight: 300; line-height: 1.5; }
+  .bp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .booking-form-card { background: var(--cream); border-radius: 20px; padding: 32px 28px; }
+  .form-row { margin-bottom: 18px; }
+  .form-label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--charcoal); margin-bottom: 7px; letter-spacing: 0.01em; }
+  .form-required { color: var(--terracotta); }
+  .form-optional { color: var(--text-muted); font-weight: 400; }
+  .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid rgba(42,47,43,0.12); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--charcoal); background: white; transition: border-color 0.2s, box-shadow 0.2s; outline: none; -webkit-appearance: none; }
+  .form-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(107,158,122,0.12); }
+  .form-input::placeholder { color: var(--text-muted); }
+  .form-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232A2F2B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  .form-submit { width: 100%; padding: 16px; background: var(--charcoal); color: white; border: none; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; margin-top: 6px; transition: background 0.2s; letter-spacing: 0.01em; }
+  .form-submit:hover { background: var(--green); }
+  .form-note { text-align: center; font-size: 0.72rem; color: var(--text-muted); margin-top: 12px; }
+  .form-success { text-align: center; padding: 32px 20px; }
+  .form-success-icon { width: 48px; height: 48px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  .form-success-icon svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 2.5; }
+  .form-success h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--charcoal); margin-bottom: 10px; }
+  .form-success p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
+
+  /* CTA */
+  .cta-section { padding: 80px 24px; text-align: center; }
+  .cta-inner { max-width: 560px; margin: 0 auto; }
+  .cta-section h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; line-height: 1.1; color: var(--charcoal); letter-spacing: -0.5px; margin-bottom: 18px; }
+  .cta-section h2 em { font-style: italic; color: var(--green); }
+  .cta-section p { font-size: 0.95rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; margin-bottom: 36px; }
+  .cta-note { font-size: 0.72rem; color: var(--text-muted); margin-top: 14px; }
+
+  /* FOOTER */
+  footer { background: var(--charcoal); padding: 48px 24px 56px; }
+  .footer-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 32px; }
+  @media (min-width: 768px) { .footer-inner { grid-template-columns: 1fr 1fr 1fr; align-items: start; } }
+  .footer-tagline { font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: 6px; }
+  .footer-links { display: flex; flex-direction: column; gap: 12px; }
+  .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; cursor: pointer; }
+  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+  .footer-links-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.18); margin-bottom: 4px; }
+  .footer-contact a { font-size: 0.82rem; color: rgba(255,255,255,0.45); text-decoration: none; display: block; margin-bottom: 6px; }
+  .footer-contact a:hover { color: rgba(255,255,255,0.7); }
+  .footer-copy { font-size: 0.7rem; color: rgba(255,255,255,0.18); margin-top: 40px; max-width: 1080px; margin-left: auto; margin-right: auto; }
+
+  /* FAQ */
+  .faq-wrap { max-width: 720px; margin: 0 auto; padding: 64px 24px; }
+  .faq-header { margin-bottom: 48px; }
+  .faq-header h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 14px; }
+  .faq-header h2 em { font-style: italic; color: var(--green); }
+  .faq-header p { font-size: 0.95rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; }
+  .faq-group { margin-bottom: 40px; }
+  .faq-group-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 12px; }
+  .faq-item { border-bottom: 1px solid rgba(42,47,43,0.08); padding: 20px 0; }
+  .faq-question { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: var(--charcoal); line-height: 1.4; background: none; border: none; width: 100%; text-align: left; font-family: 'DM Sans', sans-serif; padding: 0; }
+  .faq-chevron { width: 20px; height: 20px; flex-shrink: 0; border-radius: 50%; background: var(--cream-dark); display: flex; align-items: center; justify-content: center; transition: background 0.2s; margin-top: 2px; }
+  .faq-chevron svg { width: 10px; height: 10px; stroke: var(--charcoal); fill: none; stroke-width: 2.5; transition: transform 0.3s; }
+  .faq-item.open .faq-chevron { background: var(--green); }
+  .faq-item.open .faq-chevron svg { stroke: white; transform: rotate(180deg); }
+  .faq-answer { font-size: 0.88rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.2s; }
+  .faq-item.open .faq-answer { max-height: 600px; padding-top: 14px; }
+
+  /* TO AI OR NOT TO AI */
+  .to-ai-section { background: var(--charcoal); border-radius: 20px; padding: 32px 28px; margin-top: 56px; }
+  .to-ai-label { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: white; margin-bottom: 6px; }
+  .to-ai-sub { font-size: 0.82rem; color: rgba(255,255,255,0.4); font-weight: 300; margin-bottom: 24px; line-height: 1.6; }
+  .to-ai-section .faq-item { border-bottom-color: rgba(255,255,255,0.08); }
+  .to-ai-section .faq-question { color: white; }
+  .to-ai-section .faq-chevron { background: rgba(255,255,255,0.08); }
+  .to-ai-section .faq-chevron svg { stroke: rgba(255,255,255,0.5); }
+  .to-ai-section .faq-item.open .faq-chevron { background: var(--green); }
+  .to-ai-section .faq-item.open .faq-chevron svg { stroke: white; }
+  .to-ai-section .faq-answer { color: rgba(255,255,255,0.45); }
+
+  /* BLOG */
+  .blog-wrap { max-width: 1080px; margin: 0 auto; padding: 64px 24px; }
+  .blog-header { margin-bottom: 48px; }
+  .blog-header h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 14px; }
+  .blog-header h2 em { font-style: italic; color: var(--green); }
+  .blog-header p { font-size: 0.95rem; line-height: 1.8; color: var(--text-soft); font-weight: 300; max-width: 520px; }
+  .blog-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media (min-width: 640px) { .blog-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .blog-grid { grid-template-columns: repeat(3, 1fr); } }
+  .blog-card { background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(42,47,43,0.07); display: flex; flex-direction: column; transition: box-shadow 0.2s; cursor: pointer; }
+  .blog-card:hover { box-shadow: 0 8px 32px rgba(42,47,43,0.1); }
+  .blog-card-thumb { height: 160px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .blog-card-body { padding: 22px 20px 24px; flex: 1; display: flex; flex-direction: column; }
+  .blog-tag { display: inline-block; background: var(--green-light); color: var(--green); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; margin-bottom: 12px; border: 1px solid rgba(107,158,122,0.2); }
+  .blog-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--charcoal); line-height: 1.4; margin-bottom: 10px; }
+  .blog-excerpt { font-size: 0.82rem; line-height: 1.7; color: var(--text-muted); font-weight: 300; flex: 1; margin-bottom: 16px; }
+  .blog-meta { font-size: 0.7rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+  .blog-meta-dot { width: 3px; height: 3px; background: var(--text-muted); border-radius: 50%; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-eyebrow { animation: fadeUp 0.6s ease 0.1s both; }
+  .hero h1 { animation: fadeUp 0.6s ease 0.2s both; }
+  .hero-sub { animation: fadeUp 0.6s ease 0.3s both; }
+  .hero-cta-group { animation: fadeUp 0.6s ease 0.4s both; }
+  .pain-cards { animation: fadeUp 0.6s ease 0.5s both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo" onclick="showPage('home'); return false;">
+    <span class="logo-local">Local</span>
+    <span class="logo-dot"></span>
+    <span class="logo-ai">ai</span>
+  </a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#" onclick="showPage('home'); scrollToSection('how'); return false;">How it works</a>
+      <a href="#" onclick="showPage('home'); scrollToSection('pricing'); return false;">Pricing</a>
+      <a href="#" onclick="showPage('faq'); return false;">FAQ</a>
+      <a href="#" onclick="showPage('blog'); return false;">Blog</a>
+    </div>
+    <a href="#" class="nav-cta" onclick="showPage('home'); scrollToSection('book'); return false;">Free audit</a>
+  </div>
+</nav>
+
+<!-- PAGE TABS -->
+<div class="page-tabs">
+  <button class="page-tab active" onclick="showPage('home')">Home</button>
+  <button class="page-tab" onclick="showPage('faq')">FAQ</button>
+  <button class="page-tab" onclick="showPage('blog')">Blog</button>
+</div>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+
+<section class="hero">
+  <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Wellington, New Zealand</div>
+  <h1>Big business<br/><em>capability.</em><br/>Local business heart.</h1>
+  <p class="hero-sub">We help local businesses fix the small stuff that's eating their time, and build the big stuff that helps them grow.</p>
+  <div class="hero-cta-group">
+    <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;">Book a free AI audit</a>
+    <a href="#" class="btn-ghost" onclick="scrollToSection('how'); return false;">See how it works &rarr;</a>
+  </div>
+  <div class="pain-cards">
+    <div class="pain-card">"I know I should be using AI. I just don't have time to figure it out."</div>
+    <div class="pain-card">"I can't afford to hire someone, but I need more capacity."</div>
+    <div class="pain-card">"Everyone's talking about AI. I just don't know where to start."</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item"><span>+</span> Hospitality</span>
+    <span class="ticker-item"><span>+</span> Retail</span>
+    <span class="ticker-item"><span>+</span> Health &amp; Fitness</span>
+    <span class="ticker-item"><span>+</span> Real Estate &amp; Property</span>
+    <span class="ticker-item"><span>+</span> Beauty &amp; Wellness</span>
+    <span class="ticker-item"><span>+</span> Professional Services</span>
+    <span class="ticker-item"><span>+</span> Hospitality</span>
+    <span class="ticker-item"><span>+</span> Retail</span>
+    <span class="ticker-item"><span>+</span> Health &amp; Fitness</span>
+    <span class="ticker-item"><span>+</span> Real Estate &amp; Property</span>
+    <span class="ticker-item"><span>+</span> Beauty &amp; Wellness</span>
+    <span class="ticker-item"><span>+</span> Professional Services</span>
+  </div>
+</div>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-label">The audit</div><div class="stat-value">Free</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat-item"><div class="stat-label">Report delivered</div><div class="stat-value">Fast insights</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat-item"><div class="stat-label">Lock-in</div><div class="stat-value">No lock-in</div></div>
+    <div class="stat-divider"></div>
+    <div class="stat-item"><div class="stat-label">Based in</div><div class="stat-value">Wellington, NZ</div></div>
+  </div>
+</div>
+
+<!-- WHO WE HELP -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-eyebrow">Who we work with</div>
+    <h2 class="section-title">From the coffee counter<br/>to the <em>boardroom.</em></h2>
+    <p class="section-body">You don't need a tech background. You don't need to understand AI. You just need 30 minutes and you'll leave knowing exactly what to do next.</p>
+    <div class="industries-grid">
+      <div class="industry-chip">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" stroke="#6B9E7A" fill="none" stroke-width="1.5"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+        <span class="industry-label">Hospitality</span>
+      </div>
+      <div class="industry-chip">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" stroke="#C0714F" fill="none" stroke-width="1.5"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></div>
+        <span class="industry-label">Retail</span>
+      </div>
+      <div class="industry-chip">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" stroke="#6B9E7A" fill="none" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
+        <span class="industry-label">Health &amp; Fitness</span>
+      </div>
+      <div class="industry-chip">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" stroke="#C0714F" fill="none" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+        <span class="industry-label">Real Estate &amp; Property</span>
+      </div>
+      <div class="industry-chip">
+        <div class="industry-icon"><svg viewBox="0 0 24 24" stroke="#6B9E7A" fill="none" stroke-width="1.5"><path d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg></div>
+        <span class="industry-label">Beauty &amp; Wellness</span>
+      </div>
+      <div class="industry-chip" style="background:var(--green-light);border:1px dashed rgba(107,158,122,0.35);">
+        <div class="industry-icon" style="background:white;"><svg viewBox="0 0 24 24" stroke="#6B9E7A" fill="none" stroke-width="1.5"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></div>
+        <span class="industry-label" style="color:var(--green);">&amp; Others</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="section-eyebrow">The process</div>
+    <h2 class="section-title">Simple from day one.<br/><em>Results from week one.</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
+        <h3>The free AI audit</h3>
+        <p>A 30 to 45 minute conversation about your business. What you do, where the friction is, where you want to grow. No PowerPoint. Just a real korero.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+        <h3>Your personalised report</h3>
+        <p>Within 24 hours you'll receive a full report. A SWOT analysis, market context, and the top AI opportunities specific to your business. This alone is worth the conversation.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+        <h3>We build, train, and hand over</h3>
+        <p>If you want to go further, we agree a scope, build the tools, and hand them over with proper training. You're in control and we'll stay accessible to make sure everything's working as it should.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INCLUDED -->
+<section class="section" style="background:var(--cream-dark);">
+  <div class="section-inner">
+    <div class="section-eyebrow">What's included</div>
+    <h2 class="section-title">We don't just set it up.<br/><em>We stay accessible.</em></h2>
+    <div class="value-list">
+      <div class="value-item">
+        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="value-title">Free AI audit</div><div class="value-desc">No obligation. Sing out when you're ready.</div></div>
+      </div>
+      <div class="value-item">
+        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="value-title">Custom built for your business</div><div class="value-desc">Built for where your business is and where it's going.</div></div>
+      </div>
+      <div class="value-item">
+        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="value-title">Plain language, always</div><div class="value-desc">No jargon. If it doesn't make sense, we haven't explained it well enough.</div></div>
+      </div>
+      <div class="value-item">
+        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="value-title">NZ owned and operated</div><div class="value-desc">Local business helping local business. That's not a tagline, it's just true.</div></div>
+      </div>
+      <div class="value-item">
+        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="value-title">Honest advice, always</div><div class="value-desc">If we don't think AI is the right move for your business, we'll say so.</div></div>
+      </div>
+      <div class="value-item">
+        <div class="value-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="value-title">No disappearing act</div><div class="value-desc">We're still here after delivery. That's a promise, not a tagline.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="about-inner">
+    <div class="section-eyebrow">Who are we</div>
+    <h2 class="section-title">Business first.<br/><em>AI second.</em></h2>
+    <p class="section-body">Most AI companies lead with tools. We lead with your business. We're not here to impress you with technology. We're here to help you solve real problems and build something that lasts.</p>
+    <div class="about-quote-card">
+      <div class="quote-text">“What matters hasn't changed. Your business, your customers. AI can just help you serve them better.”</div>
+      <div class="quote-attr"><strong>Joel Norris</strong><span>Founder, Local AI</span></div>
+    </div>
+    <div class="value-tags">
+      <span class="value-tag">Wellington-based</span>
+      <span class="value-tag">Business first</span>
+      <span class="value-tag">No lock-in</span>
+      <span class="value-tag">Plain language</span>
+      <span class="value-tag">We stay accessible</span>
+    </div>
+    <div class="joel-card">
+      <img src="./joel.jpg" alt="Joel Norris" class="joel-photo" />
+      <div>
+        <div class="section-eyebrow" style="margin-bottom:10px;">The person you'll talk to</div>
+        <div class="joel-name">Joel Norris</div>
+        <div class="joel-role">Founder, Local AI</div>
+        <p class="joel-text">I'm Joel. I'm a Wellington-based recruiter who got deep into AI and realised local businesses were being left behind. So I built something about it.</p>
+        <p class="joel-text">I start every client relationship the same way. With curiosity, a real conversation, and a genuine interest in what you're trying to solve and how we can make things better.</p>
+        <a href="mailto:joel@localai.nz" class="joel-email">joel@localai.nz</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-eyebrow">Pricing</div>
+    <h2 class="section-title">Straightforward.<br/><em>No surprises.</em></h2>
+    <p class="section-body">Start with a free audit. We scope everything together from there.</p>
+    <div class="pricing-steps">
+      <div class="pricing-step">
+        <div class="ps-num">01</div>
+        <div class="ps-body">
+          <div class="ps-label">Start here</div>
+          <div class="ps-name">Free AI audit</div>
+          <p class="ps-desc">30 minutes to understand your business and how AI can genuinely help it. No obligation. Just a real conversation about where you are and where you want to go. You'll have your personalised report within 24 hours.</p>
+          <div class="ps-includes">
+            <div class="ps-include"><div class="feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Full business audit conversation</div>
+            <div class="ps-include"><div class="feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>AI-generated report within 24hrs</div>
+            <div class="ps-include"><div class="feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>SWOT analysis and top AI use cases</div>
+            <div class="ps-include"><div class="feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Three implementation scenarios</div>
+          </div>
+          <div class="ps-free">Free</div>
+        </div>
+      </div>
+      <div class="pricing-arrow">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="pricing-step">
+        <div class="ps-num">02</div>
+        <div class="ps-body">
+          <div class="ps-label">Then</div>
+          <div class="ps-name">We scope it together</div>
+          <p class="ps-desc">We lead with curiosity and a genuine understanding of your business, your needs, and where you want to take it. If there's a fit, we put together a scope based on what your business actually needs. No templates. No guesswork.</p>
+          <p class="ps-desc">If AI isn't the right move right now, we'll tell you that too.</p>
+          <div class="ps-honesty">
+            <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            No locked-in contracts or terms. We'll always be upfront about ongoing costs before you commit to anything.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:36px;">
+      <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;">Book your free audit and we'll talk through pricing honestly</a>
+      <div class="cta-note" style="margin-top:12px;">30 minutes. No obligation. No surprises.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING FORM -->
+<section class="booking-section" id="book">
+  <div class="booking-inner">
+    <div class="booking-left">
+      <div class="section-eyebrow">Book your free audit</div>
+      <h2 class="section-title">30 minutes. Real conversation.<br/><em>Real answers.</em></h2>
+      <p class="section-body">No obligation. No tech knowledge required. We'll figure out together whether AI can genuinely make a difference for your business.</p>
+      <div class="booking-promises">
+        <div class="booking-promise"><div class="bp-dot"></div>Free. No credit card, no commitment.</div>
+        <div class="booking-promise"><div class="bp-dot"></div>AI-generated report delivered within 24hrs</div>
+        <div class="booking-promise"><div class="bp-dot"></div>If AI isn't right for you, we'll say so</div>
+      </div>
+    </div>
+    <div class="booking-right">
+      <div class="booking-form-card">
+        <div class="form-row">
+          <label class="form-label">Your name <span class="form-required">*</span></label>
+          <input type="text" class="form-input" placeholder="Jane Smith" />
+        </div>
+        <div class="form-row">
+          <label class="form-label">Business name <span class="form-required">*</span></label>
+          <input type="text" class="form-input" placeholder="Smith's Cafe" />
+        </div>
+        <div class="form-row">
+          <label class="form-label">Email <span class="form-required">*</span></label>
+          <input type="email" class="form-input" placeholder="jane@smithscafe.co.nz" />
+        </div>
+        <div class="form-row">
+          <label class="form-label">Business size</label>
+          <select class="form-input form-select">
+            <option value="" disabled selected>How many staff?</option>
+            <option>Just me</option>
+            <option>2-5 staff</option>
+            <option>6-10 staff</option>
+            <option>11-20 staff</option>
+            <option>20+ staff</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Biggest time drain <span class="form-optional">(optional)</span></label>
+          <textarea class="form-input form-textarea" placeholder="e.g. Answering the same customer questions over and over, chasing invoices, scheduling..."></textarea>
+        </div>
+        <button class="form-submit" onclick="handleFormSubmit(this)">Book my free audit</button>
+        <div class="form-note">We'll reply within one business day. Your details are kept private and never shared.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="section-eyebrow" style="display:inline-block;margin-bottom:16px;">Still thinking?</div>
+    <h2>Not sure if AI is right<br/>for you? <em>Ask us.</em></h2>
+    <p>The audit is free. The conversation is honest. If AI isn't the right move right now, we'll tell you that too.</p>
+    <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;">Book a free 30-min audit</a>
+    <div class="cta-note">No commitment. No tech knowledge required.</div>
+  </div>
+</section>
+
+</div><!-- end home page -->
+
+<!-- FAQ PAGE -->
+<div id="page-faq" class="page">
+<div class="faq-wrap">
+  <div class="faq-header">
+    <div class="section-eyebrow">Common questions</div>
+    <h2>Everything you<br/>want to <em>know.</em></h2>
+    <p>Straight answers. No fluff. If your question isn't here, just email us.</p>
+  </div>
+
+  <div class="faq-group">
+    <div class="faq-group-label">Getting started</div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">What actually happens in the free audit?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">It's a 30 to 45 minute conversation about your business, not a sales pitch. We talk about what you do, where time gets lost, what's frustrating, and where you want to grow. From there we figure out together whether AI can actually help. If it can't, we'll say so.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">Do I need any tech knowledge?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">None at all. We explain everything in plain language. If we're using a term you don't recognise, stop us. That's on us, not you. Our job is to make this simple.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">How long does it take to get started?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">Book an audit and we'll be in touch within one business day to set a time. The audit itself is 30 to 45 minutes, and you'll have your personalised report within 24 hours of the conversation.</div>
+    </div>
+  </div>
+
+  <div class="faq-group">
+    <div class="faq-group-label">About the work</div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">What kinds of things can AI actually do for my business?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">AI handles the repetitive, time-consuming work so you can focus on your customers, your growth, and the things only you can do. In practice that looks like automating appointment reminders, handling repetitive customer enquiries, processing invoices or forms, sending follow-up emails, and generating reports or summaries. The audit will show you exactly what's relevant for you.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">What if AI isn't right for my business right now?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">We'll tell you. Honestly. We're not interested in selling you something that doesn't make a tangible difference. If the timing isn't right or there's a better solution, that's what we'll say. You'll leave the audit better informed either way.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">Will I be dependent on you after the build?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">It depends on what you're looking for in terms of AI capability. Every build comes with proper handover training so you understand what's been built and how it works. That said, most automations live on platforms we manage on your behalf, so we'll always be upfront about what that means for ongoing costs and involvement. There are no locked-in contracts or terms. If you'd prefer a setup with minimal ongoing reliance on us, we'll work to find the right option. We do encourage businesses to stay engaged over time though. AI moves fast. We can keep your tools current, increase capability as your business grows, and make sure what we've built is still working hard for you.</div>
+    </div>
+  </div>
+
+  <div class="faq-group">
+    <div class="faq-group-label">Pricing &amp; process</div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">Is the audit really free? What's the catch?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">Really free. No catch. We believe the best way to earn your business is to give value first. The audit and the report that follows are genuinely useful on their own, even if you decide not to go further.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">How does payment work?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">For build projects we use a 50/50 structure. Half when you sign the Statement of Work, half on delivery. This keeps things fair on both sides. For the monthly retainer, it's billed monthly with 30 days cancellation notice.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">What's included in the monthly retainer?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">Ongoing management of your AI tools, on-call support when things need attention, and one new AI capability built for your business every quarter. It's designed for businesses who want to keep growing their AI capability without having to manage it themselves.</div>
+    </div>
+  </div>
+
+  <!-- TO AI OR NOT TO AI -->
+  <div class="to-ai-section">
+    <div class="to-ai-label">To AI or Not To AI</div>
+    <div class="to-ai-sub">The bigger questions local business owners are asking. Honest answers.</div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">Will AI replace me?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">AI isn't coming for your job. It's coming for the parts of your job you don't want to do. The repetitive tasks, the follow-ups, the admin that eats your Tuesday afternoon. The things that matter, your relationships, your craft, your reputation, those are yours. We believe the future looks local. Real people delivering real outcomes will always create more value than automation alone. AI just helps you show up better for the parts that count.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">Is AI just for big businesses with big budgets?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">It used to be. That's genuinely changed. The tools that once required enterprise budgets and dedicated IT teams are now accessible to a business with three staff and a laptop. We built Local AI specifically because we kept seeing small businesses being left behind while larger ones pulled ahead. The question now isn't whether you can afford AI. It's whether you can afford not to look into it.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">What happens if the AI gets it wrong?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">We'll be the first to say it. AI isn't perfect. That's why everything we build includes proper handover training, clear guardrails, and ongoing support if you want it. We don't build and disappear. If something isn't working the way it should, we want to know about it. Getting it right matters more to us than getting it sold.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">Do I need to be tech-savvy to use it?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">No. Genuinely. Some of our best conversations have been with business owners who openly said they weren't tech people. That's fine. Our job is to make this simple. If we've built something you don't understand, that's on us not you. We're also committed to helping business owners go on the journey with AI, building understanding over time so you're not just using the tools, you actually get why they work.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">Is now the right time, or should I wait?<div class="faq-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></button>
+      <div class="faq-answer">That's an honest question and it deserves an honest answer. For some businesses, now is exactly the right time. For others, the foundations aren't quite there yet. We'll tell you which one you are in the audit. The businesses starting to explore AI now are building an advantage that will be hard to close in two or three years. Waiting isn't neutral. But rushing in without the right foundation isn't smart either. The audit exists to answer this question for your specific situation.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;padding:28px;background:white;border-radius:18px;border:1px solid rgba(42,47,43,0.07);">
+    <div class="section-eyebrow" style="margin-bottom:10px;">Still got questions?</div>
+    <p style="font-size:0.9rem;line-height:1.7;color:var(--text-soft);font-weight:300;margin-bottom:18px;">Just email us. We're a real business run by a real person and we'll get back to you properly.</p>
+    <a href="mailto:joel@localai.nz" class="btn-primary" style="display:inline-block;">Email us</a>
+  </div>
+</div>
+</div><!-- end faq page -->
+
+<!-- BLOG PAGE -->
+<div id="page-blog" class="page">
+<div class="blog-wrap">
+  <div class="blog-header">
+    <div class="section-eyebrow">Straight talk on AI</div>
+    <h2>The Local AI <em>blog.</em></h2>
+    <p>Plain language. Real examples. No hype. Written for local business owners, not tech people.</p>
+  </div>
+  <div class="blog-grid">
+    <div class="blog-card">
+      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">01</span></div>
+      <div class="blog-card-body">
+        <span class="blog-tag">Getting started</span>
+        <div class="blog-title">What is AI? The no jargon, no fluff explanation.</div>
+        <div class="blog-excerpt">Everyone's talking about it. Not everyone's explaining it. Here's what AI actually is, what it can do today, and what it still can't do. Plain language. No hype.</div>
+        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-thumb" style="background:var(--green);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.15);font-size:3rem;font-weight:900;">02</span></div>
+      <div class="blog-card-body">
+        <span class="blog-tag">Getting started</span>
+        <div class="blog-title">What AI can actually do for a small business today</div>
+        <div class="blog-excerpt">Not the hype. Not the sci-fi version. What it can realistically do for a cafe, a gym, or a property manager right now, today.</div>
+        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-thumb" style="background:var(--terracotta);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.15);font-size:3rem;font-weight:900;">03</span></div>
+      <div class="blog-card-body">
+        <span class="blog-tag">Real examples</span>
+        <div class="blog-title">The 3 hours a week you didn't know you were losing</div>
+        <div class="blog-excerpt">Most business owners are doing the same manual tasks over and over. Here's what that actually costs and what fixing it looks like.</div>
+        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-thumb" style="background:var(--cream-dark);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(42,47,43,0.1);font-size:3rem;font-weight:900;">04</span></div>
+      <div class="blog-card-body">
+        <span class="blog-tag">Myth busting</span>
+        <div class="blog-title">AI isn't just for big companies. Here's the proof.</div>
+        <div class="blog-excerpt">The tools that used to cost enterprise budgets are now within reach for a business with 3 staff. Here's what's changed and what it means for you.</div>
+        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">05</span></div>
+      <div class="blog-card-body">
+        <span class="blog-tag">How to</span>
+        <div class="blog-title">How to know if you're ready for AI. A simple checklist.</div>
+        <div class="blog-excerpt">Before you spend a dollar on AI tools, answer these five questions. They'll tell you whether now is the right time and what to do if it isn't.</div>
+        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-thumb" style="background:var(--green-light);border-bottom:1px solid rgba(107,158,122,0.15);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(107,158,122,0.3);font-size:3rem;font-weight:900;">06</span></div>
+      <div class="blog-card-body">
+        <span class="blog-tag">Behind the scenes</span>
+        <div class="blog-title">Why I started Local AI and what I've learned so far</div>
+        <div class="blog-excerpt">The honest version of how this started, what's worked, what hasn't, and why I believe local businesses deserve better access to this technology.</div>
+        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">07</span></div>
+      <div class="blog-card-body">
+        <span class="blog-tag">Local focus</span>
+        <div class="blog-title">AI in Wellington: what local businesses are doing (and not doing)</div>
+        <div class="blog-excerpt">A ground-level look at where Wellington small businesses are on their AI journey and the simple first steps that are making a difference.</div>
+        <div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:48px;text-align:center;padding:40px 0;border-top:1px solid rgba(42,47,43,0.08);">
+    <p style="font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:6px;">Posts dropping soon. Want a heads up when they go live?</p>
+    <a href="mailto:joel@localai.nz?subject=Blog updates" class="btn-primary" style="display:inline-block;margin-top:16px;">Get notified</a>
+  </div>
+</div>
+</div><!-- end blog page -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <a href="#" class="logo" onclick="showPage('home'); return false;" style="margin-bottom:8px;display:inline-flex;">
+        <span class="logo-local" style="color:white;">Local</span>
+        <span class="logo-dot"></span>
+        <span class="logo-ai">ai</span>
+      </a>
+      <div class="footer-tagline">Big business capability. Local business heart.</div>
+      <div class="footer-tagline" style="margin-top:4px;">Wellington, NZ</div>
+    </div>
+    <div>
+      <div class="footer-links-label">Navigate</div>
+      <div class="footer-links">
+        <a href="#" onclick="showPage('home'); return false;">Home</a>
+        <a href="#" onclick="showPage('home'); scrollToSection('how'); return false;">How it works</a>
+        <a href="#" onclick="showPage('home'); scrollToSection('pricing'); return false;">Pricing</a>
+        <a href="#" onclick="showPage('faq'); return false;">FAQ</a>
+        <a href="#" onclick="showPage('blog'); return false;">Blog</a>
+      </div>
+    </div>
+    <div class="footer-contact">
+      <div class="footer-links-label">Get in touch</div>
+      <a href="mailto:joel@localai.nz">joel@localai.nz</a>
+      <a href="#" onclick="scrollToSection('book'); return false;" style="margin-top:12px;display:inline-block;background:var(--green);color:white;padding:10px 20px;border-radius:100px;font-size:0.8rem;font-weight:600;text-decoration:none;">Book a free audit</a>
+    </div>
+  </div>
+  <div class="footer-copy">&copy; 2026 Local AI Limited. NZ owned &amp; operated.</div>
+</footer>
+
+</body>
+</html>
