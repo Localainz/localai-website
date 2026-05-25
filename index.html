@@ -39,7 +39,149 @@ function handleFormSubmit(btn) {
     }
   });
   if (!valid) return;
-  card.innerHTML = '<div class="form-success"><div class="form-success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><h3>We\'ll be in touch.</h3><p>Thanks for reaching out. Joel will be in touch within one business day to set up a time. Check your inbox and your spam folder just in case.</p></div>';
+  card.innerHTML = "<div class=\"form-success\"><div class=\"form-success-icon\"><svg viewBox=\"0 0 24 24\"><polyline points=\"20 6 9 17 4 12\"/></svg></div><h3>We'll be in touch.</h3><p>Thanks for reaching out. Joel will be in touch within one business day.</p></div>";
+}
+
+var qScores = {};
+var qMultiScores = {};
+var qTotal = 0;
+
+window.qSelect = function(btn, qNum, score) {
+  var q = btn.closest('.quiz-q');
+  q.querySelectorAll('.quiz-opt').forEach(function(o) { o.classList.remove('selected'); });
+  btn.classList.add('selected');
+  qScores[qNum] = score;
+  var nb = document.getElementById('qnext-' + qNum);
+  if (nb) nb.disabled = false;
+}
+
+window.qMulti = function(btn, qNum, score) {
+  btn.classList.toggle('selected');
+  if (!qMultiScores[qNum]) qMultiScores[qNum] = {};
+  var key = btn.textContent.trim().substring(0,20);
+  if (btn.classList.contains('selected')) {
+    qMultiScores[qNum][key] = score;
+  } else {
+    delete qMultiScores[qNum][key];
+  }
+  var total = 0;
+  for (var k in qMultiScores[qNum]) { total += qMultiScores[qNum][k]; }
+  qScores[qNum] = total;
+  var nb = document.getElementById('qnext-' + qNum);
+  if (nb) nb.disabled = Object.keys(qMultiScores[qNum]).length === 0;
+}
+
+window.qNext = function(num) {
+  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
+  document.querySelector('[data-q="' + num + '"]').classList.add('active');
+  qUpdateProgress(num);
+}
+
+window.qPrev = function(num) {
+  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
+  document.querySelector('[data-q="' + num + '"]').classList.add('active');
+  qUpdateProgress(num);
+}
+
+window.qUpdateProgress = function(num) {
+  var pct = (num / 5) * 100;
+  document.getElementById('qprogress').style.width = pct + '%';
+  document.getElementById('qplabel').textContent = 'Question ' + num + ' of 5';
+}
+
+window.qCalcTotal = function() {
+  qTotal = 0;
+  for (var k in qScores) { qTotal += qScores[k]; }
+}
+
+window.qShowEmail = function() {
+  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
+  document.getElementById('quiz-email-step').classList.add('active');
+  document.getElementById('qprogress').style.width = '100%';
+  document.getElementById('qplabel').textContent = 'Almost done';
+}
+
+window.qGetResult = function() {
+  qCalcTotal();
+  // Scoring weights: mindset and AI experience matter most, size least
+  // Q1 size: max 2, Q2 pain points multi: max 3, Q3 tech comfort: max 4
+  // Q4 AI experience: max 5, Q5 success vision multi: max 3
+  // Total max: 17
+  var singleTotal = (qScores[1] || 0) + (qScores[3] || 0) + (qScores[4] || 0);
+  var multiQ2 = Math.min(qScores[2] || 0, 3);
+  var multiQ5 = Math.min(qScores[5] || 0, 3);
+  var adjustedTotal = singleTotal + multiQ2 + multiQ5;
+
+  var badge, title, desc, fillPct, fillColor;
+  if (adjustedTotal <= 7) {
+    badge = '<span class="quiz-result-badge tier1">Just getting started</span>';
+    title = "AI is on the horizon for you.";
+    desc = "You're not there yet and that's completely fine. A free audit will give you a clear picture of where AI can eventually fit, and what to focus on first. No pressure, no jargon.";
+    fillPct = '22%';
+    fillColor = 'var(--terracotta)';
+  } else if (adjustedTotal <= 12) {
+    badge = '<span class="quiz-result-badge tier2">Ready to explore</span>';
+    title = "You're in exactly the right place.";
+    desc = "You know your pain points, you're open to change, and AI can make a real difference for your business right now. A free audit will show you 2 to 3 clear wins you can act on straight away.";
+    fillPct = '62%';
+    fillColor = 'var(--green)';
+  } else {
+    badge = '<span class="quiz-result-badge tier3">Early adopter</span>';
+    title = "You\'re already thinking the right way.";
+    desc = "You\'re forward-thinking, already experimenting, and there's real capability left to unlock. The businesses getting the most from AI right now are ones like yours. Let's talk about what's next.";
+    fillPct = '94%';
+    fillColor = 'var(--charcoal)';
+  }
+  return { badge: badge, title: title, desc: desc, fillPct: fillPct, fillColor: fillColor };
+}
+
+window.qShowResult = function() {
+  var r = qGetResult();
+  document.getElementById('qresult-badge').innerHTML = r.badge;
+  document.getElementById('qresult-title').textContent = r.title;
+  document.getElementById('qresult-desc').textContent = r.desc;
+  document.getElementById('qscore-fill').style.width = r.fillPct;
+  document.getElementById('qscore-fill').style.background = r.fillColor;
+  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
+  document.getElementById('quiz-result-step').classList.add('active');
+  document.getElementById('qprogress').style.width = '100%';
+  document.getElementById('qplabel').textContent = 'Your result';
+}
+
+window.qSubmitEmail = function() {
+  var name = document.getElementById('quiz-name').value.trim();
+  var email = document.getElementById('quiz-email').value.trim();
+  var r = qGetResult();
+
+  if (email) {
+    fetch('https://formspree.io/f/YOURFORMID', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        result: r.title,
+        score: qTotal,
+        source: 'AI Readiness Quiz'
+      })
+    });
+  }
+
+  qShowResult();
+}
+
+window.blogSignup = function() {
+  var email = document.getElementById('blog-email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('blog-email').style.borderColor = 'var(--terracotta)';
+    return;
+  }
+  fetch('https://formspree.io/f/YOURFORMID', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email, source: 'Blog signup' })
+  });
+  document.getElementById('blog-form').innerHTML = "<p style=\"font-size:0.9rem;color:var(--green);font-weight:500;\">You're on the list. We'll be in touch when the first post drops.</p>";
 }
 </script>
 <style>
@@ -129,15 +271,55 @@ function handleFormSubmit(btn) {
   @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
   /* STATS STRIP */
-  .stats-strip { background: white; border-bottom: 1px solid rgba(42,47,43,0.07); padding: 24px; }
-  .stats-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr; align-items: center; }
-  @media (max-width: 600px) { .stats-inner { grid-template-columns: 1fr 1fr; } }
-  .stat-item { text-align: center; padding: 16px 12px; }
-  .stat-label { font-size: 0.65rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
-  .stat-value { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; color: var(--charcoal); letter-spacing: -0.5px; line-height: 1.1; white-space: nowrap; }
-  @media (max-width: 600px) { .stat-value { font-size: 1.15rem; } }
-  .stat-divider { width: 1px; height: 40px; background: rgba(42,47,43,0.1); justify-self: center; }
-  @media (max-width: 600px) { .stat-divider { display: none; } .stat-item { padding: 16px 8px; border-bottom: 1px solid rgba(42,47,43,0.06); } .stat-item:nth-child(1), .stat-item:nth-child(3) { border-right: 1px solid rgba(42,47,43,0.06); } .stat-item:nth-child(5), .stat-item:nth-child(7) { border-bottom: none; } }
+  .stats-strip {
+    background: white;
+    border-top: 1px solid rgba(42,47,43,0.07);
+    border-bottom: 1px solid rgba(42,47,43,0.07);
+  }
+  .stats-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  .stat-item {
+    flex: 1;
+    text-align: center;
+    padding: 28px 12px;
+    border-right: 1px solid rgba(42,47,43,0.07);
+    min-width: 0;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-label {
+    display: block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .stat-value {
+    display: block;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    letter-spacing: -0.3px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  @media (max-width: 600px) {
+    .stats-inner { flex-wrap: wrap; }
+    .stat-item { flex: 0 0 50%; border-bottom: 1px solid rgba(42,47,43,0.07); }
+    .stat-item:nth-child(2) { border-right: none; }
+    .stat-item:nth-child(3), .stat-item:nth-child(4) { border-bottom: none; }
+    .stat-label { font-size: 0.55rem; }
+    .stat-value { font-size: 1.1rem; }
+  }
 
   /* SECTIONS */
   .section { padding: 72px 24px; }
@@ -311,6 +493,85 @@ function handleFormSubmit(btn) {
   .hero-cta-group { animation: fadeUp 0.6s ease 0.4s both; }
   .pain-cards { animation: fadeUp 0.6s ease 0.5s both; }
 
+
+  /* BLOG COMING SOON */
+  .blog-coming-wrap {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+  }
+
+  .blog-coming-inner {
+    text-align: center;
+    max-width: 480px;
+  }
+
+  .blog-coming-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .blog-coming-sub {
+    font-size: 1rem;
+    color: var(--text-soft);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .blog-signup-form {
+    display: flex;
+    gap: 8px;
+    max-width: 380px;
+    margin: 0 auto 12px;
+  }
+
+  .blog-email-input {
+    flex: 1;
+    padding: 14px 16px;
+    border: 1.5px solid rgba(42,47,43,0.12);
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--charcoal);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .blog-email-input:focus { border-color: var(--green); }
+  .blog-email-input::placeholder { color: var(--text-muted); }
+
+  .blog-signup-btn {
+    background: var(--charcoal);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 14px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .blog-signup-btn:hover { background: var(--green); }
+
+  .blog-signup-note {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
   /* QUIZ SECTION */
   .quiz-section { padding: 72px 24px; background: var(--cream-dark); }
   .quiz-outer { max-width: 1080px; margin: 0 auto; }
@@ -387,135 +648,7 @@ function handleFormSubmit(btn) {
 
 </style>
 
-<script>
-var qScores = {};
-var qMultiScores = {};
-var qTotal = 0;
 
-function qSelect(btn, qNum, score) {
-  var q = btn.closest('.quiz-q');
-  q.querySelectorAll('.quiz-opt').forEach(function(o) { o.classList.remove('selected'); });
-  btn.classList.add('selected');
-  qScores[qNum] = score;
-  var nb = document.getElementById('qnext-' + qNum);
-  if (nb) nb.disabled = false;
-}
-
-function qMulti(btn, qNum, score) {
-  btn.classList.toggle('selected');
-  if (!qMultiScores[qNum]) qMultiScores[qNum] = {};
-  var key = btn.textContent.trim().substring(0,20);
-  if (btn.classList.contains('selected')) {
-    qMultiScores[qNum][key] = score;
-  } else {
-    delete qMultiScores[qNum][key];
-  }
-  var total = 0;
-  for (var k in qMultiScores[qNum]) { total += qMultiScores[qNum][k]; }
-  qScores[qNum] = total;
-  var nb = document.getElementById('qnext-' + qNum);
-  if (nb) nb.disabled = Object.keys(qMultiScores[qNum]).length === 0;
-}
-
-function qNext(num) {
-  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
-  document.querySelector('[data-q="' + num + '"]').classList.add('active');
-  qUpdateProgress(num);
-}
-
-function qPrev(num) {
-  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
-  document.querySelector('[data-q="' + num + '"]').classList.add('active');
-  qUpdateProgress(num);
-}
-
-function qUpdateProgress(num) {
-  var pct = (num / 5) * 100;
-  document.getElementById('qprogress').style.width = pct + '%';
-  document.getElementById('qplabel').textContent = 'Question ' + num + ' of 5';
-}
-
-function qCalcTotal() {
-  qTotal = 0;
-  for (var k in qScores) { qTotal += qScores[k]; }
-}
-
-function qShowEmail() {
-  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
-  document.getElementById('quiz-email-step').classList.add('active');
-  document.getElementById('qprogress').style.width = '100%';
-  document.getElementById('qplabel').textContent = 'Almost done';
-}
-
-function qGetResult() {
-  qCalcTotal();
-  // Scoring weights: mindset and AI experience matter most, size least
-  // Q1 size: max 2, Q2 pain points multi: max 3, Q3 tech comfort: max 4
-  // Q4 AI experience: max 5, Q5 success vision multi: max 3
-  // Total max: 17
-  var singleTotal = (qScores[1] || 0) + (qScores[3] || 0) + (qScores[4] || 0);
-  var multiQ2 = Math.min(qScores[2] || 0, 3);
-  var multiQ5 = Math.min(qScores[5] || 0, 3);
-  var adjustedTotal = singleTotal + multiQ2 + multiQ5;
-
-  var badge, title, desc, fillPct, fillColor;
-  if (adjustedTotal <= 7) {
-    badge = '<span class="quiz-result-badge tier1">Just getting started</span>';
-    title = "AI is on the horizon for you.";
-    desc = "You're not there yet and that's completely fine. A free audit will give you a clear picture of where AI can eventually fit, and what to focus on first. No pressure, no jargon.";
-    fillPct = '22%';
-    fillColor = 'var(--terracotta)';
-  } else if (adjustedTotal <= 12) {
-    badge = '<span class="quiz-result-badge tier2">Ready to explore</span>';
-    title = "You're in exactly the right place.";
-    desc = "You know your pain points, you're open to change, and AI can make a real difference for your business right now. A free audit will show you 2 to 3 clear wins you can act on straight away.";
-    fillPct = '62%';
-    fillColor = 'var(--green)';
-  } else {
-    badge = '<span class="quiz-result-badge tier3">Early adopter</span>';
-    title = "You're already thinking the right way.";
-    desc = "You're forward-thinking, already experimenting, and there's real capability left to unlock. The businesses getting the most from AI right now are ones like yours. Let's talk about what's next.";
-    fillPct = '94%';
-    fillColor = 'var(--charcoal)';
-  }
-  return { badge: badge, title: title, desc: desc, fillPct: fillPct, fillColor: fillColor };
-}
-
-function qShowResult() {
-  var r = qGetResult();
-  document.getElementById('qresult-badge').innerHTML = r.badge;
-  document.getElementById('qresult-title').textContent = r.title;
-  document.getElementById('qresult-desc').textContent = r.desc;
-  document.getElementById('qscore-fill').style.width = r.fillPct;
-  document.getElementById('qscore-fill').style.background = r.fillColor;
-  document.querySelectorAll('.quiz-q').forEach(function(q) { q.classList.remove('active'); });
-  document.getElementById('quiz-result-step').classList.add('active');
-  document.getElementById('qprogress').style.width = '100%';
-  document.getElementById('qplabel').textContent = 'Your result';
-}
-
-function qSubmitEmail() {
-  var name = document.getElementById('quiz-name').value.trim();
-  var email = document.getElementById('quiz-email').value.trim();
-  var r = qGetResult();
-
-  if (email) {
-    fetch('https://formspree.io/f/YOURFORMID', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        result: r.title,
-        score: qTotal,
-        source: 'AI Readiness Quiz'
-      })
-    });
-  }
-
-  qShowResult();
-}
-</script>
 
 </head>
 <body>
@@ -529,7 +662,7 @@ function qSubmitEmail() {
   </a>
   <div class="nav-right">
 
-    <a href="#" class="nav-cta" onclick="showPage('home'); scrollToSection('book'); return false;">Book my free audit</a>
+    <a href="#" class="nav-cta" onclick="showPage('home'); scrollToSection('book'); return false;">Book your free audit</a>
   </div>
 </nav>
 
@@ -545,11 +678,10 @@ function qSubmitEmail() {
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Wellington, New Zealand</div>
   <h1>Big business<br/><em>capability.</em><br/>Local business heart.</h1>
   <p class="hero-sub">We help local businesses fix the small stuff that's eating their time, and build the big stuff that helps them grow.</p>
   <div class="hero-cta-group">
-    <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;">Book my free audit</a>
+    <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;">Book your free audit</a>
     <a href="#" class="btn-ghost" onclick="scrollToSection('how'); return false;">See how it works &rarr;</a>
   </div>
   <div class="pain-cards">
@@ -581,12 +713,9 @@ function qSubmitEmail() {
 <div class="stats-strip">
   <div class="stats-inner">
     <div class="stat-item"><div class="stat-label">The audit</div><div class="stat-value">Free</div></div>
-    <div class="stat-divider"></div>
-    <div class="stat-item"><div class="stat-label">Report delivered</div><div class="stat-value">Fast insights</div></div>
-    <div class="stat-divider"></div>
-    <div class="stat-item"><div class="stat-label">Lock-in</div><div class="stat-value">No lock-in</div></div>
-    <div class="stat-divider"></div>
-    <div class="stat-item"><div class="stat-label">Based in</div><div class="stat-value">Wellington, NZ</div></div>
+    <div class="stat-item"><div class="stat-label">Report delivered</div><div class="stat-value">Personalised</div></div>
+    <div class="stat-item"><div class="stat-label">Adoption process</div><div class="stat-value">Guided</div></div>
+    <div class="stat-item"><div class="stat-label">Time back</div><div class="stat-value">Reclaimed</div></div>
   </div>
 </div>
 
@@ -594,7 +723,7 @@ function qSubmitEmail() {
 <section class="section">
   <div class="section-inner">
     <div class="section-eyebrow">Who we work with</div>
-    <h2 class="section-title">From the coffee counter<br/>to the <em>boardroom.</em></h2>
+    <h2 class="section-title">From the café<br/>to the <em>boardroom.</em></h2>
     <p class="section-body">You don't need a tech background. You don't need to understand AI. You just need 30 minutes and you'll leave knowing exactly what to do next.</p>
     <div class="industries-grid">
       <div class="industry-chip">
@@ -702,8 +831,8 @@ function qSubmitEmail() {
 
       <!-- EMAIL CAPTURE -->
       <div class="quiz-q" id="quiz-email-step">
-        <div class="quiz-q-text">Want us to send you a personalised breakdown with your result?</div>
-        <p style="font-size:0.82rem;color:var(--text-muted);font-weight:300;margin-bottom:20px;line-height:1.6;">Takes 10 seconds. We'll email you your result and a note on what it means for your business.</p>
+        <div class="quiz-q-text">Want your results emailed to you?</div>
+        <p style="font-size:0.82rem;color:var(--text-muted);font-weight:300;margin-bottom:20px;line-height:1.6;">Drop your email and we'll send your result straight to your inbox within minutes.</p>
         <div class="form-row" style="margin-bottom:14px;">
           <label class="form-label">Your name</label>
           <input type="text" class="form-input" id="quiz-name" placeholder="Jane Smith" />
@@ -712,7 +841,7 @@ function qSubmitEmail() {
           <label class="form-label">Email address</label>
           <input type="email" class="form-input" id="quiz-email" placeholder="jane@smithscafe.co.nz" />
         </div>
-        <button class="quiz-next" style="width:100%;padding:14px;" onclick="qSubmitEmail()">Send my results</button>
+        <button class="quiz-next" style="width:100%;padding:14px;" onclick="qSubmitEmail()">Email me my results</button>
         <button class="quiz-back" style="width:100%;text-align:center;margin-top:12px;padding:8px;" onclick="qShowResult()">Skip — just show me my result</button>
       </div>
 
@@ -723,7 +852,7 @@ function qSubmitEmail() {
         <div class="quiz-score-bar"><div class="quiz-score-fill" id="qscore-fill"></div></div>
         <div class="quiz-score-labels"><span>Earlier stage</span><span>Ready to go</span></div>
         <p class="quiz-result-desc" id="qresult-desc"></p>
-        <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;" style="display:block;text-align:center;margin-top:24px;">Book my free audit</a>
+        <a href="#" class="btn-primary" onclick="scrollToSection('book'); return false;" style="display:block;text-align:center;margin-top:24px;">Book your free audit</a>
         <p style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:10px;">Free. No obligation. Joel will be in touch within one business day.</p>
       </div>
 
@@ -772,7 +901,7 @@ function qSubmitEmail() {
         <div class="section-eyebrow" style="margin-bottom:10px;">The person you'll talk to</div>
         <div class="joel-name">Joel Norris</div>
         <div class="joel-role">Founder, Local AI</div>
-        <p class="joel-text">I'm Joel. I'm a Wellington-based recruiter who got deep into AI and realised local businesses were being left behind. So I built something about it.</p>
+        <p class="joel-text">I'm Joel. I'm a Wellington-based tech recruiter who got deep into AI and realised local businesses were being left behind. So I built something about it.</p>
         <p class="joel-text">I start every client relationship the same way. With curiosity, a real conversation, and a genuine interest in what you're trying to solve.</p>
         <a href="mailto:joel@localai.nz" class="joel-email">joel@localai.nz</a>
       </div>
@@ -783,7 +912,6 @@ function qSubmitEmail() {
       <div class="trust-tags" style="margin-top:24px;">
         <span class="trust-tag">Wellington-based</span>
         <span class="trust-tag">Business first</span>
-        <span class="trust-tag">No lock-in</span>
         <span class="trust-tag">Plain language</span>
         <span class="trust-tag">We stay accessible</span>
       </div>
@@ -796,7 +924,7 @@ function qSubmitEmail() {
 <section class="booking-section" id="book">
   <div class="booking-inner">
     <div class="booking-left">
-      <div class="section-eyebrow">Book my free audit</div>
+      <div class="section-eyebrow">Book your free audit</div>
       <h2 class="section-title">Book my free<br/><em>audit.</em></h2>
       <p class="section-body">No obligation. No tech knowledge required. We'll figure out together whether AI can genuinely make a difference for your business.</p>
 
@@ -917,45 +1045,16 @@ function qSubmitEmail() {
 
 <!-- BLOG PAGE -->
 <div id="page-blog" class="page">
-<div class="blog-wrap">
-  <div class="blog-header">
-    <div class="section-eyebrow">Straight talk on AI</div>
-    <h2>The Local AI <em>blog.</em></h2>
-    <p>Plain language. Real examples. No hype. Written for local business owners, not tech people.</p>
-  </div>
-  <div class="blog-grid">
-    <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">01</span></div>
-      <div class="blog-card-body"><span class="blog-tag">Getting started</span><div class="blog-title">What is AI? The no jargon, no fluff explanation.</div><div class="blog-excerpt">Everyone's talking about it. Not everyone's explaining it. Here's what AI actually is, what it can do today, and what it still can't do.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
+<div class="blog-coming-wrap">
+  <div class="blog-coming-inner">
+    <div class="section-eyebrow" style="margin-bottom:20px;">Coming soon</div>
+    <div class="blog-coming-title">The blog is coming.</div>
+    <p class="blog-coming-sub">Get notified when posts go live.</p>
+    <div class="blog-signup-form" id="blog-form">
+      <input type="email" class="blog-email-input" id="blog-email" placeholder="your@email.com" />
+      <button class="blog-signup-btn" onclick="blogSignup()">Notify me</button>
     </div>
-    <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--green);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.15);font-size:3rem;font-weight:900;">02</span></div>
-      <div class="blog-card-body"><span class="blog-tag">Getting started</span><div class="blog-title">What AI can actually do for a small business today</div><div class="blog-excerpt">Not the hype. Not the sci-fi version. What it can realistically do for a cafe, a gym, or a property manager right now, today.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
-    </div>
-    <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--terracotta);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.15);font-size:3rem;font-weight:900;">03</span></div>
-      <div class="blog-card-body"><span class="blog-tag">Real examples</span><div class="blog-title">The 3 hours a week you didn't know you were losing</div><div class="blog-excerpt">Most business owners are doing the same manual tasks over and over. Here's what that actually costs and what fixing it looks like.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
-    </div>
-    <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--cream-dark);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(42,47,43,0.1);font-size:3rem;font-weight:900;">04</span></div>
-      <div class="blog-card-body"><span class="blog-tag">Myth busting</span><div class="blog-title">AI isn't just for big companies. Here's the proof.</div><div class="blog-excerpt">The tools that used to cost enterprise budgets are now within reach for a business with 3 staff. Here's what's changed.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
-    </div>
-    <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">05</span></div>
-      <div class="blog-card-body"><span class="blog-tag">How to</span><div class="blog-title">How to know if you're ready for AI. A simple checklist.</div><div class="blog-excerpt">Before you spend a dollar on AI tools, answer these five questions. They'll tell you whether now is the right time.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
-    </div>
-    <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--green-light);border-bottom:1px solid rgba(107,158,122,0.15);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(107,158,122,0.3);font-size:3rem;font-weight:900;">06</span></div>
-      <div class="blog-card-body"><span class="blog-tag">Behind the scenes</span><div class="blog-title">Why I started Local AI and what I've learned so far</div><div class="blog-excerpt">The honest version of how this started, what's worked, what hasn't, and why local businesses deserve better access to AI.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
-    </div>
-    <div class="blog-card">
-      <div class="blog-card-thumb" style="background:var(--charcoal);"><span style="font-family:'DM Serif Display',serif;font-style:italic;color:rgba(255,255,255,0.12);font-size:3rem;font-weight:900;">07</span></div>
-      <div class="blog-card-body"><span class="blog-tag">Local focus</span><div class="blog-title">AI in Wellington: what local businesses are doing (and not doing)</div><div class="blog-excerpt">A ground-level look at where Wellington small businesses are on their AI journey and the simple first steps making a difference.</div><div class="blog-meta"><span>Joel Norris</span><span class="blog-meta-dot"></span><span>Coming soon</span></div></div>
-    </div>
-  </div>
-  <div style="margin-top:48px;text-align:center;padding:40px 0;border-top:1px solid rgba(42,47,43,0.08);">
-    <p style="font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:6px;">Posts dropping soon. Want a heads up when they go live?</p>
-    <a href="mailto:joel@localai.nz?subject=Blog updates" class="btn-primary" style="display:inline-block;margin-top:16px;">Get notified</a>
+    <div class="blog-signup-note">No spam. Just a heads up when something worth reading goes live.</div>
   </div>
 </div>
 </div><!-- end blog page -->
@@ -977,7 +1076,6 @@ function qSubmitEmail() {
       <div class="footer-links">
         <a href="#" onclick="showPage('home'); return false;">Home</a>
         <a href="#" onclick="showPage('home'); scrollToSection('how'); return false;">How it works</a>
-        <a href="#" onclick="showPage('home'); scrollToSection('pricing'); return false;">Pricing</a>
         <a href="#" onclick="showPage('faq'); return false;">FAQ</a>
         <a href="#" onclick="showPage('blog'); return false;">Blog</a>
       </div>
@@ -985,7 +1083,7 @@ function qSubmitEmail() {
     <div class="footer-contact">
       <div class="footer-links-label">Get in touch</div>
       <a href="mailto:joel@localai.nz">joel@localai.nz</a>
-      <a href="#" onclick="scrollToSection('book'); return false;" style="margin-top:12px;display:inline-block;background:var(--green);color:white;padding:10px 20px;border-radius:100px;font-size:0.8rem;font-weight:600;text-decoration:none;">Book a free audit</a>
+      <a href="#" onclick="scrollToSection('book'); return false;" style="margin-top:12px;display:inline-block;background:var(--green);color:white;padding:10px 20px;border-radius:100px;font-size:0.8rem;font-weight:600;text-decoration:none;">Book your free audit</a>
     </div>
   </div>
   <div class="footer-copy">&copy; 2026 Local AI Limited. NZ owned &amp; operated.</div>
