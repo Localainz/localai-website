@@ -39,7 +39,28 @@ function handleFormSubmit(btn) {
     }
   });
   if (!valid) return;
-  card.innerHTML = "<div class=\"form-success\"><div class=\"form-success-icon\"><svg viewBox=\"0 0 24 24\"><polyline points=\"20 6 9 17 4 12\"/></svg></div><h3>We'll be in touch.</h3><p>Thanks for reaching out. Joel will be in touch within one business day.</p></div>";
+
+  var allInputs = card.querySelectorAll('input');
+  var name = '', business = '', email = '';
+  allInputs.forEach(function(inp) {
+    if (inp.type === 'email') email = inp.value;
+    else if (inp.placeholder && inp.placeholder.indexOf('Smith') > -1 && inp.placeholder.indexOf('@') === -1) business = inp.value;
+    else if (inp.type === 'text') name = inp.value;
+  });
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  fetch('https://formspree.io/f/xeedlwnw', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ name: name, business: business, email: email, source: 'Booking Form' })
+  }).then(function() {
+    card.innerHTML = '<div class="form-success"><div class="form-success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><h3>We\'ll be in touch.</h3><p>Thanks for reaching out. Joel will be in touch within one business day to set up a time.</p></div>';
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = 'Book my free audit';
+  });
 }
 
 var qScores = {};
@@ -154,7 +175,7 @@ window.qSubmitEmail = function() {
   var r = qGetResult();
 
   if (email) {
-    fetch('https://formspree.io/f/YOURFORMID', {
+    fetch('https://formspree.io/f/xeedlwnw', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -176,7 +197,7 @@ window.blogSignup = function() {
     document.getElementById('blog-email').style.borderColor = 'var(--terracotta)';
     return;
   }
-  fetch('https://formspree.io/f/YOURFORMID', {
+  fetch('https://formspree.io/f/xeedlwnw', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email, source: 'Blog signup' })
