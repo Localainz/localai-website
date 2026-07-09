@@ -1,0 +1,746 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { buildServices, trainServices, tickerItems, tools } from '../data/services';
+import { reviews } from '../data/reviews';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ProfessionalService',
+      '@id': 'https://localai.nz/#business',
+      name: 'Local AI',
+      legalName: 'Local AI Limited',
+      url: 'https://localai.nz/',
+      email: 'joel@localai.nz',
+      description:
+        'Local AI is a Wellington-based AI consultancy that implements AI workflow capability and custom AI agents, and runs team workshops and coaching for small business owners across New Zealand. Most projects come in under the $5,000 mark and are delivered in three to six weeks. Every engagement starts with a 30-minute conversation, followed by a free AI Snapshot: a personalised report showing where AI will add the most value to your business.',
+      slogan: 'Your Local AI growth partner for small business',
+      address: { '@type': 'PostalAddress', addressLocality: 'Wellington', addressCountry: 'NZ' },
+      areaServed: [
+        { '@type': 'City', name: 'Wellington' },
+        { '@type': 'Country', name: 'New Zealand' },
+      ],
+      founder: { '@id': 'https://localai.nz/#joel' },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Services',
+        itemListElement: [
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'AI Snapshot',
+              description:
+                'Free 30-minute audit of your business plus a personalised report, delivered within 24 hours, identifying the highest-value places AI can save time.',
+            },
+            price: '0',
+            priceCurrency: 'NZD',
+          },
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'AI automation builds',
+              description:
+                'Done-for-you AI agents and workflow automation: enquiry responses, booking, invoicing, reporting, lead follow-up and more. Flat-fee projects, typically $2,000-$6,000 NZD, delivered in two to four weeks.',
+            },
+          },
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'AI coaching',
+              description: 'Monthly one-on-one coaching sessions to build your own AI capability with no lock-in.',
+            },
+          },
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Team AI workshops',
+              description: 'Half-day or full-day practical AI workshops for teams, tailored to your industry.',
+            },
+          },
+        ],
+      },
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://localai.nz/#joel',
+      name: 'Joel Norris',
+      jobTitle: 'Founder',
+      worksFor: { '@id': 'https://localai.nz/#business' },
+      homeLocation: { '@type': 'City', name: 'Wellington, New Zealand' },
+      description:
+        "Joel Norris is the founder of Local AI, a Wellington-based AI consultancy for small businesses. With a background in tech recruitment for New Zealand's most forward-thinking technology organisations, Joel helps small businesses adopt AI to automate admin, save time, and free teams for high-value work. He hosts a monthly AI executive breakfast and helps run the Wellington AI Engineering meetup.",
+      knowsAbout: [
+        'AI consulting for small business',
+        'AI automation',
+        'AI agents',
+        'workflow automation',
+        'AI training and coaching',
+        'ChatGPT for business',
+      ],
+      email: 'joel@localai.nz',
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://localai.nz/#website',
+      url: 'https://localai.nz/',
+      name: 'Local AI',
+      publisher: { '@id': 'https://localai.nz/#business' },
+      inLanguage: 'en-NZ',
+    },
+  ],
+};
+---
+<BaseLayout
+  title="Local AI | AI Consulting, Automation & Training for Small Business — Wellington, NZ"
+  description="Local AI is a Wellington-based AI consultancy for small businesses. We find where AI saves you the most time, build the automation tools, train your team, and stick around. Free AI Snapshot to start — most projects under $5,000 NZD."
+  path="/"
+  ogTitle="Local AI — AI Consulting & Automation for Small Business, Wellington NZ"
+  ogDescription="We find where AI can make the biggest impact on your business, build the tools, and train your team. Free AI Snapshot to start."
+  jsonLd={jsonLd}
+>
+
+<Nav />
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <h1 class="serif" style="margin-top:0;">
+        Your Local AI growth partner<br>for <span class="g">small business.</span>
+      </h1>
+    </div>
+    <div class="hero-right">
+      <p class="hero-sub">We discover where AI can make the biggest impact on your business. Then we build the tools to scale operations, get you more time back, and keep your business moving forward.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hs-fig serif">64%</div>
+          <div class="hs-cap">of NZ SME owners say AI saves them time, about a day a week <span style="white-space:nowrap;">(Xero, 2026)</span></div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-fig serif">91%</div>
+          <div class="hs-cap">of small businesses using AI say it boosts their revenue <span style="white-space:nowrap;">(Salesforce, 2024)</span></div>
+        </div>
+        <div class="hero-stat">
+          <div class="hs-fig serif">2.3&times;</div>
+          <div class="hs-cap">the productivity gains when teams are trained on AI <span style="white-space:nowrap;">(Deloitte, 2025)</span></div>
+        </div>
+      </div>
+      <div class="hero-cta-row">
+        <a class="hero-talk" href="#cta">Let's talk <span class="htk-arrow">→</span></a>
+        <span class="hero-note">Free · 30-minute conversation · No pitch</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY NOW -->
+<section class="why-now">
+  <div class="wrap">
+  <div class="why-now-panel">
+    <div class="label">Why now?</div>
+    <div class="why-now-grid">
+      <div>
+        <h2 class="serif">Now is your time<br>to get ahead.</h2>
+        <div class="why-viz" id="why-viz" aria-hidden="true"></div>
+      </div>
+      <div>
+        <div class="why-now-points">
+          <div class="wnp">
+            <span class="wnp-dot"></span>
+            <span class="wnp-text"><strong>AI is moving fast.</strong> The gap between businesses using it and those that aren't widens every month. Start now and the advantage compounds.</span>
+          </div>
+          <div class="wnp">
+            <span class="wnp-dot"></span>
+            <span class="wnp-text"><strong>You don't need a big budget.</strong> Most Wellington businesses we work with are up and running for less than they expect. The ROI is measurable within weeks, not years.</span>
+          </div>
+          <div class="wnp">
+            <span class="wnp-dot"></span>
+            <span class="wnp-text"><strong>The free AI Snapshot costs you nothing.</strong> A thirty minute chat and you'll know exactly where AI fits your business, and what it would take to get there.</span>
+          </div>
+        </div>
+        <div class="why-cta"><a href="#cta">Let's talk →</a></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker">
+    {[...tickerItems, ...tickerItems].map((label) => (
+      <div class="ticker-item"><span class="t-label">{label}</span><span class="t-dot"></span></div>
+    ))}
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="process-header">
+      <div style="grid-column:1 / -1;text-align:center;">
+        <div class="label">The process</div>
+        <h2 class="serif" style="margin-top:14px;">From first call to launch.</h2>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step left">
+        <span class="step-n">01</span>
+        <span class="step-title">A 30-minute chat</span>
+        <span class="step-body">We audit your business, identify bottlenecks, and map out exactly where AI can save you time and drive growth.</span>
+      </div>
+      <div class="step right">
+        <span class="step-n">02</span>
+        <span class="step-title">Your AI Snapshot</span>
+        <span class="step-body">A personalised report in your inbox within 24 hours. The single highest-ROI place to start, and other use cases mapped out clearly.</span>
+      </div>
+      <div class="step left">
+        <span class="step-n">03</span>
+        <span class="step-title">The implementation</span>
+        <span class="step-body">Our team builds, tests, and deploys your systems. You get weekly updates and a working product, not a deck full of promises.</span>
+      </div>
+      <div class="step right">
+        <span class="step-n">04</span>
+        <span class="step-title">Support and scale</span>
+        <span class="step-body">Optional retainer for monitoring, optimisation, and iteration. Most clients see compounding returns over time.</span>
+      </div>
+    </div>
+    <p class="process-outcome">More capacity for you and your team to focus on high-value work.</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="services-header">
+      <div class="label">Services</div>
+      <h2 class="serif">We build it. You own it.</h2>
+      <p class="svc-intro">Custom AI workflows and agents, scoped up front. You own everything we build.</p>
+    </div>
+
+    <div class="svc-group">
+      <div class="coach-cards">
+        {buildServices.map((card) => (
+          <div class="coach-card">
+            <div class="cc-title">{card.title}</div>
+            <div class="cc-body">{card.body}</div>
+            <div class="cc-price">{card.price}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="svc-group" style="margin-top:64px;padding-top:56px;border-top:1px solid var(--ink-20);">
+      <div class="services-header-right" style="margin-left:auto;max-width:520px;margin-bottom:32px;">
+        <div class="label">Train</div>
+        <h2 class="serif">We don't just build,<br>we also train.</h2>
+        <p class="svc-intro svc-group-sub">Hands-on workshops and personal coaching to build your own AI capability.</p>
+      </div>
+      <div class="coach-cards">
+        {trainServices.map((card) => (
+          <div class="coach-card">
+            <div class="cc-title">{card.title}</div>
+            <div class="cc-body">{card.body}</div>
+            <div class="cc-price">{card.price}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="wrap about-inner">
+    <div class="about-photo" style="background:none;padding:0;overflow:hidden;aspect-ratio:1/1;width:200px;border-radius:50%;"><img src="/joel.png" alt="Joel Norris, founder of Local AI, in central Wellington" style="width:100%;height:100%;object-fit:cover;object-position:50% 0%;display:block;"></div>
+    <div>
+      <div class="label" style="margin-bottom:20px;">About us</div>
+      <p class="about-bio" style="margin-top:0;">Hi, I'm Joel. I've spent years recruiting for New Zealand's top tech companies, watching AI transform them from the inside. Small businesses weren't getting the same edge. Most owners I spoke to knew AI mattered, they just didn't have a starting point. So I started Local AI, working alongside a small team of AI engineers who build what we scope together. Between the AI exec breakfast I host and the Wellington AI Engineering meetup I help run, I see what's working first-hand and bring it straight back to businesses like yours.</p>
+      <div class="about-name" style="margin-top:28px;">Joel Norris</div>
+      <div class="about-role">Founder, Local AI · Wellington, NZ</div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="tools-strip">
+      <div class="tools-label">Tools we work with</div>
+      <div class="tools-row">
+        {tools.map((tool) => <span>{tool}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS (hidden until src/data/reviews.ts has entries) -->
+{reviews.length > 0 && (
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="reviews-head">
+      <div class="label">What clients say</div>
+      <h2 class="serif">Real businesses, real results.</h2>
+    </div>
+    <div class="review-grid">
+      {reviews.map((review) => (
+        <div class="review">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">“{review.text}”</p>
+          <div class="review-by">
+            <div class="review-avatar">{review.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}</div>
+            <div>
+              <div class="review-name">{review.name}</div>
+              <div class="review-role">{review.role}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+)}
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="wrap">
+    <div class="urgency">
+      <span class="dot"></span>
+      <span id="urgency-label">Currently taking on new clients</span>
+    </div>
+    <h2 class="serif">Ready to get your week back?</h2>
+    <p class="cta-sub">Book a free 30-minute chat. We'll go over your business, your bottlenecks, and where AI fits.</p>
+    <div class="cta-form" id="cta-form">
+      <form class="cta-email" id="cta-email-form">
+        <input type="email" name="email" required placeholder="Your email address">
+        <button type="submit">Let's talk</button>
+      </form>
+      <p class="cta-note">Free · No pitch · 30 minutes</p>
+      <p class="cta-note" style="margin-top:10px;">Prefer email? <a href="mailto:joel@localai.nz" style="color:var(--green-deep);text-decoration:underline;text-underline-offset:3px;">joel@localai.nz</a></p>
+    </div>
+  </div>
+</section>
+
+<Footer seoParagraph />
+
+</BaseLayout>
+
+<style is:global>
+/* ─── Hero ───────────────────────────── */
+.hero {
+  padding: 120px 0 104px;
+  border-bottom: 1px solid var(--ink-20);
+}
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 36px;
+}
+.hero h1 {
+  font-size: clamp(44px, 6.2vw, 80px);
+  line-height: 1.06;
+  letter-spacing: -1.2px;
+  color: var(--ink);
+  max-width: 940px;
+}
+.hero h1 .g { color: var(--green); }
+.hero-right { padding-bottom: 0; max-width: 540px; }
+.hero-sub {
+  font-size: 15px; font-weight: 300; line-height: 1.7;
+  color: var(--ink-50); margin-bottom: 28px; text-wrap: pretty;
+}
+.hero-cta-row { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.hero-talk {
+  display: inline-flex; align-items: center; gap: 14px;
+  background: var(--green); color: #fff;
+  font-size: 15px; font-weight: 500;
+  padding: 8px 8px 8px 26px; border-radius: 100px;
+  transition: background .15s, transform .15s;
+}
+.hero-talk:hover { background: var(--green-deep); transform: translateY(-1px); }
+.hero-talk .htk-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #fff; color: var(--green); font-size: 16px;
+}
+.hero-note { font-size: 12.5px; font-weight: 300; color: var(--ink-50); text-align: center; margin-top: 4px; }
+
+/* Hero stats, compact inline row */
+.hero-stats { display: flex; justify-content: center; gap: 26px; margin: 36px 0 36px; flex-wrap: nowrap; }
+.hero-stat { text-align: center; flex: 1; max-width: 150px; }
+.hero-stat .hs-fig { font-family: 'DM Serif Display', serif; font-size: 23px; color: var(--green); line-height: 1; }
+.hero-stat .hs-cap { font-size: 10.5px; font-weight: 300; color: var(--ink-50); margin-top: 7px; line-height: 1.4; }
+
+/* ─── Why Now ───────────────────────── */
+.why-now {
+  padding: 40px 0; border-bottom: 1px solid var(--ink-20);
+}
+.why-now .wrap { max-width: 1240px; }
+.why-now-panel {
+  position: relative; overflow: hidden;
+  background: #1B211D;
+  color: #fff;
+  border-radius: 20px;
+  padding: clamp(40px, 5vw, 72px);
+}
+.why-now-panel > * { position: relative; }
+.why-viz { margin-top: 44px; max-width: 440px; }
+.why-viz svg { display: block; width: 100%; height: auto; overflow: visible; }
+.why-viz .wv-line-ai { stroke: var(--green); stroke-width: 1.6; fill: none; }
+.why-viz .wv-line-wait { stroke: rgba(255,255,255,0.28); stroke-width: 1.2; fill: none; stroke-dasharray: 3 5; }
+.why-viz .wv-gap { stroke: rgba(255,255,255,0.35); stroke-width: 1; stroke-dasharray: 2 3; }
+.why-viz .wv-dot { fill: var(--green); }
+.why-viz .wv-dot-halo { fill: rgba(150,195,164,0.18); }
+.why-viz text { font-family: 'SF Mono', 'Fira Code', ui-monospace, monospace; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; }
+.why-viz .wv-t-ai { fill: var(--green); }
+.why-viz .wv-t-wait { fill: rgba(255,255,255,0.4); }
+.why-viz .wv-t-axis { fill: rgba(255,255,255,0.3); }
+.why-viz .wv-t-gap { fill: rgba(255,255,255,0.55); }
+.why-now .label { color: var(--green); margin-bottom: 24px; }
+.why-now-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.why-now h2 { font-size: clamp(32px, 4vw, 50px); color: #fff; line-height: 1.1; }
+.why-now-points { display: flex; flex-direction: column; gap: 0; padding-top: 6px; }
+.wnp {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.wnp:first-child { border-top: 1px solid rgba(255,255,255,0.1); }
+.wnp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-top: 8px; flex-shrink: 0; }
+.wnp-text { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.75); line-height: 1.7; }
+.wnp-text strong { color: #fff; font-weight: 500; }
+.why-cta { margin-top: 36px; }
+.why-cta a {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 14px; font-weight: 500; color: #fff;
+  border: 1px solid rgba(255,255,255,0.25); border-radius: 100px;
+  padding: 12px 22px; transition: background .15s, border-color .15s;
+}
+.why-cta a:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
+
+/* ─── Process ────────────────────────── */
+.process { padding: 80px 0; border-bottom: 1px solid var(--ink-20); }
+.process-header { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-bottom: 60px; }
+.process-header h2 { font-size: clamp(28px, 3.4vw, 40px); }
+.process-header p { font-size: 16px; font-weight: 300; color: var(--ink-50); line-height: 1.8; padding-top: 8px; text-wrap: pretty; }
+.steps { position: relative; max-width: 920px; margin: 0 auto; }
+.steps::before { content: ''; position: absolute; left: 50%; top: 8px; bottom: -40px; width: 1px; background: var(--ink-20); transform: translateX(-50%); }
+.step {
+  position: relative;
+  width: calc(50% - 48px);
+  background: #F7F7F5;
+  border: 1px solid var(--ink-20);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 44px;
+}
+.step:last-child { margin-bottom: 0; }
+.step.right { margin-left: auto; }
+.step-n {
+  position: absolute; top: 26px;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--green); border: 3px solid #fff; border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--ink-10);
+  font-family: 'DM Serif Display', serif; font-size: 14px; color: #fff;
+  z-index: 1;
+}
+.step.left .step-n { right: -69px; }
+.step.right .step-n { left: -69px; }
+.step-title { display: block; font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+.step-body { display: block; font-size: 14px; font-weight: 300; color: var(--ink-50); line-height: 1.7; text-wrap: pretty; }
+.process-outcome { text-align: center; font-size: 17px; font-weight: 300; color: var(--ink-50); margin-top: 56px; text-wrap: pretty; }
+
+/* ─── Ticker ────────────────────────── */
+.ticker-wrap {
+  border-top: 1px solid var(--ink-20); border-bottom: 1px solid var(--ink-20);
+  padding: 20px 0; overflow: hidden; position: relative;
+}
+.ticker-track {
+  display: flex; gap: 0; width: max-content;
+  animation: ticker-scroll 30s linear infinite;
+}
+.ticker-wrap:hover .ticker-track { animation-play-state: paused; }
+.ticker-item {
+  display: flex; align-items: center; gap: 36px; padding: 0 36px;
+  font-size: 13px; font-weight: 400; color: var(--ink-50); white-space: nowrap;
+}
+.ticker-item .t-label { letter-spacing: 0.04em; transition: color .15s; }
+.ticker-item:hover .t-label { color: var(--ink); }
+.ticker-item .t-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); opacity: 0.6; flex-shrink: 0; }
+@keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ─── Services ───────────────────────── */
+.services { padding: 80px 0; border-bottom: 1px solid var(--ink-20); }
+.services-header { margin-bottom: 52px; }
+.services-header h2 { font-size: clamp(28px, 3.4vw, 40px); margin-top: 14px; }
+.services-header-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+.services-header-right { text-align: right; }
+.services-header-right h2 { font-size: clamp(28px, 3.4vw, 40px); margin-top: 14px; }
+.services-header-right .label { color: var(--green); }
+.services-header-right .svc-group-sub { margin-left: auto; }
+.svc-intro { font-size: 15px; font-weight: 300; color: var(--ink-50); line-height: 1.75; max-width: 560px; margin-top: 12px; margin-bottom: 0; text-wrap: pretty; }
+
+/* ─── Coach Cards ───────────────────── */
+.coach-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 0; }
+.svc-group + .svc-group { margin-top: 56px; }
+.svc-group-sub { font-size: 14px; font-weight: 300; color: var(--ink-50); line-height: 1.6; max-width: 480px; margin-bottom: 24px; }
+.coach-card { background: #F7F7F5; border: 1px solid var(--ink-20); padding: 32px 28px; border-radius: 12px; display: flex; flex-direction: column; gap: 14px; text-align: left; }
+.coach-card .cc-title { font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.25; }
+.coach-card .cc-body { font-size: 14px; font-weight: 300; color: var(--ink-50); line-height: 1.7; text-wrap: pretty; flex: 1; }
+.coach-card .cc-price { font-size: 12px; font-weight: 500; color: var(--green); letter-spacing: 0.02em; margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--ink-10); }
+@media (max-width: 900px) { .coach-cards { grid-template-columns: 1fr; } }
+
+/* ─── About ─────────────────────────── */
+.about { padding: 80px 0; border-bottom: 1px solid var(--ink-20); background: #F7F7F5; }
+.about .about-photo { background: rgba(26,29,27,0.07); }
+.tools-strip { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--ink-20); }
+.tools-label { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-50); margin-bottom: 20px; }
+.tools-row { display: flex; flex-wrap: wrap; gap: 14px 32px; }
+.tools-row span { font-size: 14px; font-weight: 400; color: var(--ink-50); white-space: nowrap; }
+.about-inner { display: grid; grid-template-columns: 200px 1fr; gap: 60px; align-items: center; justify-content: center; }
+.about-photo { aspect-ratio: 3/4; background: var(--ink-10); border-radius: 4px; display: flex; align-items: flex-end; padding: 16px; }
+.about-bio { font-size: 15px; font-weight: 300; line-height: 1.85; color: var(--ink-50); max-width: 520px; }
+.about-name { margin-top: 28px; font-size: 14px; font-weight: 500; color: var(--ink); }
+.about-role { font-size: 13px; font-weight: 300; color: var(--ink-50); margin-top: 2px; }
+
+/* ─── Reviews ────────────────────────── */
+.reviews { padding: 80px 0; border-bottom: 1px solid var(--ink-20); }
+.reviews-head { margin-bottom: 48px; }
+.reviews-head h2 { font-size: clamp(28px, 3.4vw, 40px); margin-top: 14px; }
+.review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.review {
+  padding: 0 36px;
+  border-right: 1px solid var(--ink-20);
+}
+.review:first-child { padding-left: 0; }
+.review:last-child { padding-right: 0; border-right: none; }
+.review-stars { color: var(--green); font-size: 13px; letter-spacing: 2px; margin-bottom: 16px; }
+.review-text {
+  font-family: 'DM Serif Display', serif; font-style: italic;
+  font-size: 18px; line-height: 1.5; color: var(--ink); margin-bottom: 18px; text-wrap: pretty;
+}
+.review-by { display: flex; align-items: center; gap: 12px; }
+.review-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--ink-10); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500; color: var(--ink-50); letter-spacing: 0.02em;
+}
+.review-name { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+.review-role { font-size: 12.5px; font-weight: 300; color: var(--ink-50); margin-top: 1px; }
+
+/* ─── CTA ────────────────────────────── */
+.cta-section { padding: 100px 0; text-align: center; }
+.cta-section h2 { font-size: clamp(36px, 4.5vw, 56px); margin-top: 14px; max-width: 760px; margin-left: auto; margin-right: auto; }
+.cta-sub { font-size: 15px; font-weight: 300; color: var(--ink-50); margin: 20px auto 0; max-width: 440px; line-height: 1.8; }
+.cta-form { max-width: 440px; margin: 36px auto 0; }
+.cta-email {
+  display: flex;
+  border: 1px solid var(--ink-20); border-radius: 100px; overflow: hidden; background: #fff;
+}
+.cta-email input {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 14px 20px; color: var(--ink);
+}
+.cta-email input::placeholder { color: var(--ink-50); }
+.cta-email button {
+  background: var(--green); color: #fff; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 500;
+  padding: 13px 22px; border-radius: 100px; margin: 3px; white-space: nowrap;
+  transition: background .15s;
+}
+.cta-email button:hover { background: var(--green-deep); }
+.cta-email button:disabled { opacity: 0.7; cursor: default; }
+.cta-note { font-size: 12.5px; font-weight: 300; color: var(--ink-50); margin-top: 14px; }
+.cta-success { padding: 8px 0; }
+.cta-success .cs-icon {
+  width: 44px; height: 44px; border-radius: 50%; margin: 0 auto 18px;
+  background: var(--green-pale); border: 1px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+}
+.cta-success .cs-icon svg { width: 20px; height: 20px; stroke: var(--green-deep); stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.cta-success h3 { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-size: 22px; color: var(--ink); margin-bottom: 8px; }
+.cta-success p { font-size: 14px; font-weight: 300; color: var(--ink-50); line-height: 1.7; }
+.cta-error { color: #a05537; }
+.urgency {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12.5px; font-weight: 500; color: var(--green);
+  border: 1px solid rgba(107,158,122,0.3); border-radius: 100px; padding: 7px 16px;
+  margin-bottom: 20px;
+}
+.urgency .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+
+/* ─── Responsive ─────────────────────── */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 44px; }
+  .hero h1 { font-size: clamp(40px, 9vw, 64px); }
+
+  .process-header { grid-template-columns: 1fr; gap: 16px; }
+  .steps::before { left: 19px; transform: none; }
+  .step, .step.right { width: auto; margin-left: 56px; margin-right: 0; }
+  .step.left .step-n, .step.right .step-n { left: -57px; right: auto; }
+
+  .why-now-grid { grid-template-columns: 1fr; gap: 32px; }
+  .services-header-grid { grid-template-columns: 1fr; gap: 24px; }
+  .services-header-right { text-align: left; }
+  .services-header-right .svc-group-sub { margin-left: 0; }
+
+  .about-inner { grid-template-columns: 1fr; gap: 40px; }
+  .about-photo { max-height: 320px; }
+
+  .review-grid { grid-template-columns: 1fr; gap: 32px; }
+  .review { padding: 0 0 32px; border-right: none; border-bottom: 1px solid var(--ink-20); }
+  .review:last-child { padding-bottom: 0; border-bottom: none; }
+}
+@media (max-width: 560px) {
+  .hero h1 { font-size: clamp(34px, 10vw, 52px); }
+  .cta-email { flex-direction: column; border-radius: 14px; overflow: visible; background: transparent; border: none; gap: 10px; }
+  .cta-email input { border: 1px solid var(--ink-20); border-radius: 100px; background: #fff; padding: 14px 20px; }
+  .cta-email button { border-radius: 100px; margin: 0; padding: 14px 20px; width: 100%; }
+}
+</style>
+
+<script>
+  // "Why now" viz: draws once each time it scrolls into view, holds at the end.
+  (function () {
+    var host = document.getElementById('why-viz');
+    if (!host) return;
+    var W = 440, H = 190;
+    var padL = 8, padR = 64, padT = 26, padB = 30;
+    var x0 = padL, x1 = W - padR, yBase = H - padB, yTop = padT;
+    var NS = 'http://www.w3.org/2000/svg';
+    function el(tag: string, attrs: Record<string, string | number>) {
+      var e = document.createElementNS(NS, tag);
+      for (var k in attrs) e.setAttribute(k, String(attrs[k]));
+      return e;
+    }
+    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H });
+    // y position of each curve at progress t (0..1)
+    function yAI(t: number) { return yBase - (yBase - yTop) * (Math.pow(t, 1.7) * 0.92 + t * 0.08); }
+    function yWait(t: number) { return yBase - (yBase - yTop) * t * 0.10; }
+    function pathFor(fy: (t: number) => number, t: number) {
+      var d = '', steps = 60;
+      for (var i = 0; i <= steps * t; i++) {
+        var p = i / steps;
+        var x = x0 + (x1 - x0) * p;
+        d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + fy(p).toFixed(1);
+      }
+      return d || 'M' + x0 + ' ' + yBase;
+    }
+    var lineWait = el('path', { 'class': 'wv-line-wait', d: pathFor(yWait, 1) });
+    var lineAI = el('path', { 'class': 'wv-line-ai', d: pathFor(yAI, 0) });
+    var gapLine = el('line', { 'class': 'wv-gap', x1: x1, y1: yBase, x2: x1, y2: yBase }) as SVGLineElement;
+    var halo = el('circle', { 'class': 'wv-dot-halo', r: 9, cx: x0, cy: yBase });
+    var dot = el('circle', { 'class': 'wv-dot', r: 2.5, cx: x0, cy: yBase });
+    var tAI = el('text', { 'class': 'wv-t-ai', x: x0, y: yBase, 'text-anchor': 'start' });
+    tAI.textContent = 'with AI';
+    var tWait = el('text', { 'class': 'wv-t-wait', x: x1 + 8, y: yWait(1) + 3 });
+    tWait.textContent = 'waiting';
+    var tGap = el('text', { 'class': 'wv-t-gap', x: x1 + 8, y: (yAI(1) + yWait(1)) / 2 + 3 }) as SVGTextElement;
+    tGap.textContent = 'the gap';
+    var tT0 = el('text', { 'class': 'wv-t-axis', x: x0, y: H - 6 });
+    tT0.textContent = 'today';
+    var tT1 = el('text', { 'class': 'wv-t-axis', x: x1, y: H - 6, 'text-anchor': 'end' });
+    tT1.textContent = '+12 months';
+    var axis = el('line', { x1: x0, y1: yBase + 10, x2: x1, y2: yBase + 10, stroke: 'rgba(255,255,255,0.12)', 'stroke-width': 1 });
+    [axis, lineWait, gapLine, lineAI, halo, dot, tWait, tGap, tAI, tT0, tT1].forEach(function (n) { svg.appendChild(n); });
+    host.appendChild(svg);
+
+    function render(t: number) {
+      lineAI.setAttribute('d', pathFor(yAI, t));
+      var x = x0 + (x1 - x0) * t, y = yAI(t);
+      dot.setAttribute('cx', String(x)); dot.setAttribute('cy', String(y));
+      halo.setAttribute('cx', String(x)); halo.setAttribute('cy', String(y));
+      if (x > x1 - 60) {
+        tAI.setAttribute('text-anchor', 'end');
+        tAI.setAttribute('x', String(x - 10));
+      } else {
+        tAI.setAttribute('text-anchor', 'start');
+        tAI.setAttribute('x', String(x + 10));
+      }
+      tAI.setAttribute('y', String(Math.max(y - 10, yTop + 4)));
+      gapLine.setAttribute('x1', String(x)); gapLine.setAttribute('x2', String(x));
+      gapLine.setAttribute('y1', String(y)); gapLine.setAttribute('y2', String(yWait(t)));
+      var gapVisible = t > 0.3;
+      gapLine.style.opacity = gapVisible ? '1' : '0';
+      tGap.style.opacity = t > 0.85 ? '1' : '0';
+      tGap.style.transition = 'opacity .6s ease';
+      gapLine.style.transition = 'opacity .6s ease';
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { render(1); return; }
+
+    var DRAW = 7000;
+    var raf: number | null = null;
+    function ease(p: number) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+    function play() {
+      if (raf) cancelAnimationFrame(raf);
+      var start: number | null = null;
+      function frame(ts: number) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / DRAW, 1);
+        render(ease(p));
+        if (p < 1) raf = requestAnimationFrame(frame);
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    render(0);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { play(); }
+        else { if (raf) cancelAnimationFrame(raf); render(0); }
+      });
+    }, { threshold: 0.35 });
+    io.observe(host);
+  })();
+</script>
+
+<script>
+  // CTA form → Formspree (same live endpoint as cut one).
+  const FORM_ENDPOINT = 'https://formspree.io/f/xeedlwnw';
+  const form = document.getElementById('cta-email-form') as HTMLFormElement | null;
+  const container = document.getElementById('cta-form');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
+    const button = form.querySelector('button') as HTMLButtonElement;
+    const email = emailInput.value.trim();
+    if (!email) return;
+
+    button.disabled = true;
+    button.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ email, source: 'Website CTA' }),
+      });
+      if (!res.ok) throw new Error('Request failed');
+      container!.innerHTML =
+        '<div class="cta-success">' +
+        '<div class="cs-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+        "<h3>We'll be in touch.</h3>" +
+        '<p>Thanks for reaching out. Joel will be in touch within one business day to set up a time.</p>' +
+        '</div>';
+    } catch {
+      button.disabled = false;
+      button.textContent = "Let's talk";
+      let err = container!.querySelector('.cta-error');
+      if (!err) {
+        err = document.createElement('p');
+        err.className = 'cta-note cta-error';
+        err.innerHTML =
+          'Something went wrong sending that. Please try again, or email <a href="mailto:joel@localai.nz" style="text-decoration:underline;text-underline-offset:3px;">joel@localai.nz</a> directly.';
+        form.insertAdjacentElement('afterend', err);
+      }
+    }
+  });
+</script>

@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+
+const hasPosts = (await getCollection('blog', ({ data }) => !data.draft)).length > 0;
+const current = Astro.url.pathname;
+
+const links = [
+  { href: '/#process', label: 'How it works' },
+  { href: '/#services', label: 'Services' },
+  { href: '/#about', label: 'About' },
+  ...(hasPosts ? [{ href: '/blog', label: 'Blog' }] : []),
+  { href: '/faq', label: 'FAQ' },
+];
+
+const isCurrent = (href: string) =>
+  href.startsWith('/#') ? false : current === href || current === href + '/';
+---
+<nav>
+  <div class="wrap nav-inner">
+    <a class="nav-logo" href="/">
+      <img src="/wordmark.png" alt="Local.ai" class="wordmark-img">
+    </a>
+    <div class="nav-links-center">
+      {links.map((l) => (
+        <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>
+      ))}
+    </div>
+    <a class="nav-cta" href="/#cta">Let's talk</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span class="bl"></span>
+      <span class="bl"></span>
+      <span class="bl"></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile">
+    {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    <a class="nav-cta" href="/#cta">Let's talk</a>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('nav-toggle')!;
+  const mob = document.getElementById('nav-mobile')!;
+  btn.addEventListener('click', () => {
+    const open = mob.style.display === 'flex';
+    mob.style.display = open ? 'none' : 'flex';
+    btn.classList.toggle('open', !open);
+    btn.setAttribute('aria-expanded', String(!open));
+  });
+  mob.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      mob.style.display = 'none';
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if (!btn.contains(e.target as Node) && !mob.contains(e.target as Node)) {
+      mob.style.display = 'none';
+      btn.classList.remove('open');
+    }
+  });
+</script>

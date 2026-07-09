@@ -1,0 +1,97 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmt = new Intl.DateTimeFormat('en-NZ', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  inLanguage: 'en-NZ',
+  author: { '@id': 'https://localai.nz/#joel' },
+  publisher: { '@id': 'https://localai.nz/#business' },
+  mainEntityOfPage: `https://localai.nz/blog/${post.id}`,
+};
+---
+<BaseLayout
+  title={`${post.data.title} — Local AI`}
+  description={post.data.description}
+  path={`/blog/${post.id}`}
+  ogType="article"
+  jsonLd={jsonLd}
+>
+
+<Nav />
+
+<article>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="label">{fmt.format(post.data.date)} · Joel Norris</div>
+      <h1 class="serif">{post.data.title}</h1>
+    </div>
+  </div>
+  <div class="post-body">
+    <div class="wrap">
+      <div class="prose">
+        <Content />
+      </div>
+      <a class="post-back" href="/blog">← All posts</a>
+    </div>
+  </div>
+</article>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="wrap">
+    <div class="label">Sound like your business?</div>
+    <h2 class="serif">Let's talk.</h2>
+    <p>A free 30-minute conversation about where AI fits your business. No pitch.</p>
+    <a class="cta-btn" href="/#cta">Let's talk <span class="arr">→</span></a>
+  </div>
+</div>
+
+<Footer />
+
+</BaseLayout>
+
+<style is:global>
+.page-head { padding: 80px 0 56px; border-bottom: 1px solid var(--ink-20); }
+.page-head h1 { font-size: clamp(34px, 4.4vw, 56px); margin-top: 16px; max-width: 760px; }
+
+.post-body { padding: 56px 0 80px; }
+.prose { max-width: 700px; }
+.prose p { font-size: 16px; font-weight: 300; color: var(--ink); line-height: 1.85; margin-bottom: 22px; text-wrap: pretty; }
+.prose h2 { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; letter-spacing: -0.5px; font-size: clamp(24px, 2.6vw, 30px); line-height: 1.2; color: var(--ink); margin: 44px 0 16px; }
+.prose h3 { font-size: 17px; font-weight: 500; color: var(--ink); margin: 32px 0 12px; }
+.prose ul, .prose ol { margin: 0 0 22px 22px; }
+.prose li { font-size: 16px; font-weight: 300; color: var(--ink); line-height: 1.85; margin-bottom: 8px; }
+.prose a { color: var(--green-deep); text-decoration: underline; text-underline-offset: 3px; }
+.prose blockquote { border-left: 2px solid var(--green); padding-left: 20px; margin: 28px 0; }
+.prose blockquote p { font-family: 'DM Serif Display', Georgia, serif; font-style: italic; font-size: 19px; color: var(--ink); }
+.prose strong { font-weight: 500; }
+.prose code { font-family: 'SF Mono', 'Fira Code', ui-monospace, monospace; font-size: 14px; background: #F7F7F5; border: 1px solid var(--ink-10); border-radius: 4px; padding: 1px 6px; }
+.prose hr { border: none; border-top: 1px solid var(--ink-20); margin: 36px 0; }
+
+.post-back { display: inline-block; margin-top: 40px; font-size: 14px; font-weight: 400; color: var(--ink-50); transition: color .15s; }
+.post-back:hover { color: var(--ink); }
+
+.cta-strip { padding: 80px 0; border-top: 1px solid var(--ink-20); text-align: center; }
+.cta-strip h2 { font-size: clamp(32px, 4vw, 50px); margin-top: 14px; }
+.cta-strip p { font-size: 15px; font-weight: 300; color: var(--ink-50); margin: 16px auto 0; max-width: 400px; line-height: 1.8; }
+.cta-btn { display: inline-flex; align-items: center; gap: 14px; background: var(--green); color: #fff; font-size: 15px; font-weight: 500; padding: 8px 8px 8px 26px; border-radius: 100px; transition: background .15s; margin-top: 32px; }
+.cta-btn:hover { background: var(--green-deep); }
+.cta-btn .arr { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--green); font-size: 16px; }
+</style>

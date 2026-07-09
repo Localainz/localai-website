@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  /** Show the SEO paragraph above the footer links (home page only). */
+  seoParagraph?: boolean;
+}
+const { seoParagraph = false } = Astro.props;
+
+const hasPosts = (await getCollection('blog', ({ data }) => !data.draft)).length > 0;
+const year = new Date().getFullYear();
+---
+<footer>
+  <div class="wrap">
+    {seoParagraph && (
+      <p class="foot-seo">Local AI is a Wellington-based AI consultancy that implements AI workflow capability and custom AI agents, and runs team workshops and coaching for small business owners across New Zealand. Most projects come in under the $5,000 mark and are delivered in three to six weeks. Every engagement starts with a 30-minute conversation, followed by a free AI Snapshot: a personalised report showing where AI will add the most value to your business.</p>
+    )}
+    <div class="foot-inner">
+      <a href="/"><img src="/wordmark.png" alt="Local.ai" class="foot-logo-img"></a>
+      <div class="foot-links">
+        <a href="/#process">How it works</a>
+        <a href="/#services">Services</a>
+        <a href="/#about">About</a>
+        {hasPosts && <a href="/blog">Blog</a>}
+        <a href="/faq">FAQ</a>
+        <a href="mailto:joel@localai.nz">joel@localai.nz</a>
+      </div>
+    </div>
+    <hr class="rule" style="margin-bottom:24px;">
+    <div class="foot-bottom">
+      <span class="foot-copy">© {year} Local AI Limited. Wellington, New Zealand.</span>
+      <span class="foot-copy">NZ owned &amp; operated.</span>
+    </div>
+  </div>
+</footer>

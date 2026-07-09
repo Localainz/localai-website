@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { faqCategories } from '../data/faq';
+
+// FAQPage schema generated from the same data as the visible accordion,
+// so the two can never drift apart.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqCategories.flatMap((cat) =>
+    cat.items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  ),
+};
+---
+<BaseLayout
+  title="FAQ — Working with Local AI | AI Consulting for Small Business, Wellington NZ"
+  description="Straight answers on cost, timelines, tools, and data safety. Flat-fee builds scoped up front, coaching with no lock-in, delivered in three to six weeks."
+  path="/faq"
+  jsonLd={jsonLd}
+>
+
+<Nav />
+
+<!-- PAGE HEADER -->
+<div class="page-head">
+  <div class="wrap">
+    <div class="label">Common questions</div>
+    <h1 class="serif">Frequently asked questions.</h1>
+    <p class="page-head-sub">Everything you need to know about working with Local AI.</p>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="wrap">
+    {faqCategories.map((cat) => (
+      <div class="faq-category">
+        <div class="faq-cat-label">{cat.label}</div>
+        {cat.items.map((item) => (
+          <div class="faq-item">
+            <button class="faq-q">{item.q} <span class="faq-icon">+</span></button>
+            <div class="faq-a"><div class="faq-a-inner">{item.a}</div></div>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="wrap">
+    <div class="label">Still have questions?</div>
+    <h2 class="serif">Just ask.</h2>
+    <p>The fastest way to get an answer is a quick conversation. No prep needed.</p>
+    <a class="cta-btn" href="/#cta">Let's talk <span class="arr">→</span></a>
+  </div>
+</div>
+
+<Footer />
+
+</BaseLayout>
+
+<style is:global>
+/* PAGE HEADER */
+.page-head { padding: 80px 0 64px; border-bottom: 1px solid var(--ink-20); }
+.page-head h1 { font-size: clamp(40px, 5vw, 64px); margin-top: 14px; max-width: 640px; }
+.page-head-sub { font-size: 15px; font-weight: 300; color: var(--ink-50); margin-top: 16px; max-width: 520px; line-height: 1.7; }
+
+/* FAQ */
+.faq-section { padding: 0 0 100px; }
+.faq-category { padding-top: 64px; }
+.faq-cat-label { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; }
+.faq-item { border-top: 1px solid var(--ink-10); }
+.faq-item:last-child { border-bottom: 1px solid var(--ink-10); }
+.faq-q { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; background: none; border: none; cursor: pointer; text-align: left; padding: 22px 0; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: var(--ink); transition: color .15s; }
+.faq-q:hover { color: var(--green); }
+.faq-icon { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--ink-20); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--ink-50); transition: transform .25s, background .15s, border-color .15s; line-height: 1; }
+.faq-item.open .faq-icon { transform: rotate(45deg); background: var(--green); border-color: var(--green); color: #fff; }
+.faq-a { overflow: hidden; max-height: 0; transition: max-height .35s ease; }
+.faq-a-inner { padding: 0 0 24px; font-size: 15px; font-weight: 300; color: var(--ink-50); line-height: 1.8; max-width: 700px; }
+
+/* CTA */
+.cta-strip { padding: 80px 0; border-top: 1px solid var(--ink-20); text-align: center; }
+.cta-strip h2 { font-size: clamp(32px, 4vw, 50px); margin-top: 14px; }
+.cta-strip p { font-size: 15px; font-weight: 300; color: var(--ink-50); margin: 16px auto 0; max-width: 400px; line-height: 1.8; }
+.cta-btn { display: inline-flex; align-items: center; gap: 14px; background: var(--green); color: #fff; font-size: 15px; font-weight: 500; padding: 8px 8px 8px 26px; border-radius: 100px; transition: background .15s; margin-top: 32px; }
+.cta-btn:hover { background: var(--green-deep); }
+.cta-btn .arr { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--green); font-size: 16px; }
+</style>
+
+<script>
+  // Accordion: opening one item closes the others.
+  document.querySelectorAll('.faq-q').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item')!;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach((el) => {
+        el.classList.remove('open');
+        (el.querySelector('.faq-a') as HTMLElement).style.maxHeight = '0';
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        const a = item.querySelector('.faq-a') as HTMLElement;
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+</script>

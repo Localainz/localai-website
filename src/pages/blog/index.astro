@@ -1,0 +1,93 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const fmt = new Intl.DateTimeFormat('en-NZ', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<BaseLayout
+  title="Blog — Notes on AI for Small Business | Local AI, Wellington NZ"
+  description="Short, practical notes on using AI in a New Zealand small business: what to automate, what to skip, and what it actually takes. From Local AI, Wellington."
+  path="/blog"
+>
+
+<Nav />
+
+<!-- PAGE HEADER -->
+<div class="page-head">
+  <div class="wrap">
+    <div class="label">The blog</div>
+    <h1 class="serif">Notes on AI for small business.</h1>
+    <p class="page-head-sub">Short, practical, written for owners. No hype, no jargon.</p>
+  </div>
+</div>
+
+<!-- POSTS -->
+<div class="post-list">
+  <div class="wrap">
+    {posts.length === 0 && (
+      <p class="post-empty">First note coming soon.</p>
+    )}
+    {posts.map((post) => (
+      <a class="post-row" href={`/blog/${post.id}`}>
+        <span class="post-date">{fmt.format(post.data.date)}</span>
+        <span>
+          <span class="post-title">{post.data.title}</span>
+          <span class="post-desc">{post.data.description}</span>
+        </span>
+        <span class="post-arrow">→</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="wrap">
+    <div class="label">Sound like your business?</div>
+    <h2 class="serif">Let's talk.</h2>
+    <p>A free 30-minute conversation about where AI fits your business. No pitch.</p>
+    <a class="cta-btn" href="/#cta">Let's talk <span class="arr">→</span></a>
+  </div>
+</div>
+
+<Footer />
+
+</BaseLayout>
+
+<style is:global>
+.page-head { padding: 80px 0 64px; border-bottom: 1px solid var(--ink-20); }
+.page-head h1 { font-size: clamp(40px, 5vw, 64px); margin-top: 14px; max-width: 640px; }
+.page-head-sub { font-size: 15px; font-weight: 300; color: var(--ink-50); margin-top: 16px; max-width: 520px; line-height: 1.7; }
+
+.post-list { padding: 24px 0 100px; }
+.post-empty { padding-top: 56px; font-size: 15px; font-weight: 300; color: var(--ink-50); }
+.post-row {
+  display: grid; grid-template-columns: 160px 1fr 24px; gap: 32px; align-items: baseline;
+  padding: 28px 0; border-bottom: 1px solid var(--ink-10);
+}
+.post-row:first-of-type { border-top: 1px solid var(--ink-10); margin-top: 40px; }
+.post-date { font-size: 12.5px; font-weight: 300; color: var(--ink-50); white-space: nowrap; }
+.post-title { display: block; font-size: 18px; font-weight: 500; color: var(--ink); transition: color .15s; }
+.post-row:hover .post-title { color: var(--green); }
+.post-desc { display: block; font-size: 14px; font-weight: 300; color: var(--ink-50); line-height: 1.7; margin-top: 6px; max-width: 620px; text-wrap: pretty; }
+.post-arrow { font-size: 15px; color: var(--ink-50); transition: color .15s, transform .15s; }
+.post-row:hover .post-arrow { color: var(--green); transform: translateX(3px); }
+
+.cta-strip { padding: 80px 0; border-top: 1px solid var(--ink-20); text-align: center; }
+.cta-strip h2 { font-size: clamp(32px, 4vw, 50px); margin-top: 14px; }
+.cta-strip p { font-size: 15px; font-weight: 300; color: var(--ink-50); margin: 16px auto 0; max-width: 400px; line-height: 1.8; }
+.cta-btn { display: inline-flex; align-items: center; gap: 14px; background: var(--green); color: #fff; font-size: 15px; font-weight: 500; padding: 8px 8px 8px 26px; border-radius: 100px; transition: background .15s; margin-top: 32px; }
+.cta-btn:hover { background: var(--green-deep); }
+.cta-btn .arr { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--green); font-size: 16px; }
+
+@media (max-width: 900px) {
+  .post-row { grid-template-columns: 1fr 24px; }
+  .post-date { grid-column: 1 / -1; margin-bottom: -18px; }
+}
+</style>
