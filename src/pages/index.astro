@@ -117,7 +117,7 @@ const jsonLd = {
       </h1>
     </div>
     <div class="hero-right">
-      <p class="hero-sub">We discover where AI can make the biggest impact on your business. Then we build the tools to scale operations, get you more time back, and keep your business moving forward.</p>
+      <p class="hero-sub">We discover where AI can make the biggest<br class="mbr"> impact on your business. Then we build<br class="mbr"> the tools to scale operations, get you<br class="mbr"> more time back, and keep your<br class="mbr"> business moving forward.</p>
       <div class="hero-stats">
         <div class="hero-stat">
           <div class="hs-fig serif">64%</div>
@@ -371,6 +371,7 @@ const jsonLd = {
   background: #fff; color: var(--green); font-size: 16px;
 }
 .hero-note { font-size: 12.5px; font-weight: 300; color: var(--ink-50); text-align: center; margin-top: 4px; }
+.hero-sub .mbr { display: none; }
 
 /* Hero stats, compact inline row */
 .hero-stats { display: flex; justify-content: center; gap: 26px; margin: 36px 0 36px; flex-wrap: nowrap; }
@@ -601,8 +602,10 @@ const jsonLd = {
   .review:last-child { padding-bottom: 0; border-bottom: none; }
 }
 @media (max-width: 560px) {
+  .hero { padding: 56px 0 88px; }
   .hero h1 { font-size: clamp(31px, 10vw, 52px); }
-  .hero-sub { font-size: 16px; line-height: 1.65; }
+  .hero-sub { font-size: 15px; line-height: 1.7; max-width: none; }
+  .hero-sub .mbr { display: inline; }
   .cta-email { flex-direction: column; border-radius: 14px; overflow: visible; background: transparent; border: none; gap: 10px; }
   .cta-email input { border: 1px solid var(--ink-20); border-radius: 100px; background: #fff; padding: 14px 20px; }
   .cta-email button { border-radius: 100px; margin: 0; padding: 14px 20px; width: 100%; }
