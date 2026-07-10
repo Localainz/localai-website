@@ -113,7 +113,7 @@ const jsonLd = {
   <div class="wrap hero-inner">
     <div>
       <h1 class="serif" style="margin-top:0;">
-        Your Local AI<br class="br-mobile"> growth partner<br class="br-desktop"> for<br class="br-mobile"> <span class="g">small business.</span>
+        Your Local AI<br>growth partner for<br><span class="g">small business.</span>
       </h1>
     </div>
     <div class="hero-right">
@@ -347,9 +347,6 @@ const jsonLd = {
   letter-spacing: -1.2px;
   color: var(--ink);
 }
-/* Desktop: "Your Local AI growth partner" / "for small business."
-   Mobile:  "Your Local AI" / "growth partner for" / "small business." */
-.hero h1 .br-mobile { display: none; }
 .hero h1 .g { color: var(--green); }
 .hero-right { padding-bottom: 0; max-width: 540px; }
 .hero-sub {
@@ -583,8 +580,6 @@ const jsonLd = {
 @media (max-width: 900px) {
   .hero-inner { grid-template-columns: 1fr; gap: 44px; }
   .hero h1 { font-size: clamp(40px, 9vw, 64px); }
-  .hero h1 .br-mobile { display: inline; }
-  .hero h1 .br-desktop { display: none; }
 
   .process-header { grid-template-columns: 1fr; gap: 16px; }
   .steps::before { left: 19px; transform: none; }
