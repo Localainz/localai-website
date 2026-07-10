@@ -113,7 +113,7 @@ const jsonLd = {
   <div class="wrap hero-inner">
     <div>
       <h1 class="serif" style="margin-top:0;">
-        Your Local AI growth partner<br>for <span class="g">small business.</span>
+        Your Local AI<br class="br-mobile"> growth partner<br class="br-desktop"> for<br class="br-mobile"> <span class="g">small business.</span>
       </h1>
     </div>
     <div class="hero-right">
@@ -342,12 +342,14 @@ const jsonLd = {
   gap: 36px;
 }
 .hero h1 {
-  font-size: clamp(44px, 6.2vw, 80px);
+  font-size: clamp(44px, 6.2vw, 78px);
   line-height: 1.06;
   letter-spacing: -1.2px;
   color: var(--ink);
-  max-width: 940px;
 }
+/* Desktop: "Your Local AI growth partner" / "for small business."
+   Mobile:  "Your Local AI" / "growth partner for" / "small business." */
+.hero h1 .br-mobile { display: none; }
 .hero h1 .g { color: var(--green); }
 .hero-right { padding-bottom: 0; max-width: 540px; }
 .hero-sub {
@@ -580,6 +582,8 @@ const jsonLd = {
 @media (max-width: 900px) {
   .hero-inner { grid-template-columns: 1fr; gap: 44px; }
   .hero h1 { font-size: clamp(40px, 9vw, 64px); }
+  .hero h1 .br-mobile { display: inline; }
+  .hero h1 .br-desktop { display: none; }
 
   .process-header { grid-template-columns: 1fr; gap: 16px; }
   .steps::before { left: 19px; transform: none; }
@@ -597,7 +601,7 @@ const jsonLd = {
   .review:last-child { padding-bottom: 0; border-bottom: none; }
 }
 @media (max-width: 560px) {
-  .hero h1 { font-size: clamp(34px, 10vw, 52px); }
+  .hero h1 { font-size: clamp(31px, 10vw, 52px); }
   .hero-sub { font-size: 16px; line-height: 1.65; }
   .cta-email { flex-direction: column; border-radius: 14px; overflow: visible; background: transparent; border: none; gap: 10px; }
   .cta-email input { border: 1px solid var(--ink-20); border-radius: 100px; background: #fff; padding: 14px 20px; }
